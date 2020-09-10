@@ -19,12 +19,12 @@ int minEatingSpeed(vector<int>& piles, int H) {
 
 int minEatingSpeed(vector<int>& piles, int H) {
     // ËÑË÷×ó²à±ß½çµÄËã·¨
-    int left = 1, right = getMax(piles) + 1;
-    while (left < right) {
+    int left = 1, right = getMax(piles);
+    while (left <= right) {
         // ·ÀÖ¹Òç³ö
         int mid = left + (right - left) / 2;
         if (canFinish(piles, mid, H)) {
-            right = mid;
+            right = mid - 1;
         } else {
             left = mid + 1;
         }
