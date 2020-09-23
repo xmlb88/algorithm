@@ -53,3 +53,31 @@ ListNode* reverseKGroup(ListNode* head, int k) {
     return newHead;
 }
 
+
+
+// review 
+ListNode* reverse(ListNode* a, ListNode* b) {
+    ListNode* pre = NULL;
+    ListNode* cur = a;
+    while (cur != b) {
+        ListNode* nxt = cur -> next;
+        cur -> next = pre;
+        pre = cur;
+        cur = nxt;
+    }
+
+    return pre;
+}
+
+ListNode* reverseKGroup(ListNode* head, int k) {
+    ListNode* a = head;
+    ListNode* b = head;
+    for (int i = 0; i < k; i++) {
+        if (b == NULL) return head;
+        b = b -> next;
+    }
+
+    ListNode* newHead = reverse(a, b);
+    a -> next = reverseKGroup(b, k);
+    return newHead;
+}
