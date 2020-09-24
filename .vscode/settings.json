@@ -14,6 +14,7 @@
         "iostream": "cpp",
         "array": "cpp",
         "string_view": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "new": "cpp"
     }
 }
