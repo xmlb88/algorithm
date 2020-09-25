@@ -18,22 +18,6 @@ TreeNode* dfs(vector<int>& nums, int l, int r) {
     root -> right = dfs(nums, idx + 1, r);
     return root;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // review
 
 TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
