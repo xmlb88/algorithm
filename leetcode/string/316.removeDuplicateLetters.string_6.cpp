@@ -68,3 +68,35 @@ string removeDuplicateLetters(string s) {
     reverse(result.begin(), result.end());
     return result;
 }
+
+string removeDuplicateLetters(string s) {
+    vector<bool> instack(256, false);
+    vector<int> count(256, 0);
+    stack<char> st;
+
+    for (char c : s) {
+        count[c]++;
+    }
+
+    for (char c : s) {
+        count[c]--;
+        if (instack[c]) continue;
+
+        while (!st.empty() && count[st.top()] > 0 && st.top() > c) {
+            instack[st.top()] = false;
+            st.pop();
+        }
+
+        st.push(c);
+        instack[c] = true;
+    }
+
+    string result;
+    while (!st.empty()) {
+        result += st.top();
+        st.pop();
+    }
+
+    reverse(result.begin(), result.end());
+    return result;
+}
