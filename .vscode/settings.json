@@ -16,5 +16,20 @@
         "string_view": "cpp",
         "algorithm": "cpp",
         "new": "cpp"
-    }
+    },
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "47.115.51.42",
+            "port": 3306,
+            "askForPassword": true,
+            "driver": "MySQL",
+            "name": "xkx_database",
+            "database": "ss_3",
+            "username": "root"
+        }
+    ]
 }
