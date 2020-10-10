@@ -25,3 +25,26 @@ ListNode* detectCycle(ListNode* head) {
 
     return fast;
 }
+
+
+// review day
+ListNode* detectCycle(ListNode* head) {
+    ListNode *slow = head, *fast = head;
+    while (fast && fast -> next) {
+        fast = fast -> next -> next;
+        slow = slow -> next;
+        if (slow == fast) {
+            break;
+        }
+    }
+
+    if (fast == NULL || fast -> next == NULL) return NULL;
+
+    fast = head;
+    while (fast != slow) {
+        fast = fast -> next;
+        slow = slow -> next;
+    }
+
+    return fast;
+}

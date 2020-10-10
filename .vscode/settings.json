@@ -15,7 +15,9 @@
         "array": "cpp",
         "string_view": "cpp",
         "algorithm": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     },
     "sqltools.connections": [
         {
