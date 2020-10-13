@@ -117,3 +117,12 @@ ListNode* reverseBetween(ListNode* head, int m, int n) {
 
     return dummy -> next;
 }
+
+// review
+ListNode* reverseList(ListNode* head) {
+    if (head == NULL || head -> next == NULL) return head;
+    ListNode* last = reverseList(head -> next);
+    head -> next -> next = head;
+    head -> next = NULL;
+    return last;
+}
