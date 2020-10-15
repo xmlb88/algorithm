@@ -41,3 +41,19 @@ int coinChange(vector<int>& coins, int amount) {
 
     return (dp[amount] == amount + 1) ? -1 : dp[amount];
 }
+
+
+// review
+int coinChange(vector<int>& coins, int amount) {
+    if (amount == 0) return 0;
+    if (amount < 0) return -1;
+    int res = INT_MAX;
+    for (int coin : coins) {
+        int subproblem = coinChange(coins, amount - coin);
+        if (subproblem == -1) continue;
+        res = min(res, subproblem + 1);
+    }
+
+    return res == INT_MAX? -1 : res;
+}
+
