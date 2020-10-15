@@ -56,3 +56,42 @@ void connectTwoNode(Node* node1, Node* node2) {
     // 连接跨越父节点的两个子节点
     connectTwoNode(node1 -> right, node2 -> left);
 }
+
+
+// review
+// 完美二叉树
+// 递归
+Node* connect(Node* root) {
+    if (!root) return root;
+    connectNode(root -> left, root -> right);
+    return root;
+}
+
+void connectNode(Node* left, Node* right) {
+    if (!left || !right) return;
+    left -> next = right;
+
+    connectNode(left -> left, left -> right);
+    connectNode(left -> right, right -> left);
+    connectNode(right -> left, right -> right);
+}
+
+// 迭代
+Node* connect(Node* root) {
+    if (!root) return root;
+    queue<Node*> que;
+    que.push(root);
+    while (!que.empty()) {
+        int size = que.size();
+        for (int i = 0; i < size; i++) {
+            Node* pre = que.front();
+            que.pop();
+            if (i != size - 1) {
+                pre -> next = que.front();
+            }
+            if (pre -> left) que.push(pre -> left);
+            if (pre -> right) que.push(pre -> right);
+        }
+    }
+    return root;
+}
