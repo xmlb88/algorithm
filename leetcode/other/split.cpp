@@ -38,3 +38,38 @@ void split(const string& s, vector<string>& tokens, const string& delemiters = "
         pos = s.find_first_of(delemiters, lastpos);
     }
 }
+
+// review
+// 1. 
+vector<string> split(string& s, const char flag = ',') {
+    istringstream iss(s);
+    string str;
+    vector<string> result;
+    while (getline(iss, str, flag)) {
+        result.push_back(str);
+    }
+    return result;
+}
+
+// 2. 
+vector<string> split(string& s) {
+    vector<string> result;
+    char* token = strtok(s.data(), ",");
+    while (token != NULL) {
+        result.push_back(token);
+        token = strtok(NULL, ",");
+    }
+    return result;
+}
+
+// 3. 
+vector<string> split(string& s, const string& delemiters = ",") {
+    string::size_type lastpos = s.find_first_not_of(delemiters, 0);
+    string::size_type pos = s.find_first_of(delemiters, lastpos);
+    vector<string> result;
+    while (lastpos != string::npos || pos != string::npos) {
+        result.push_back(s.substr(lastpos, pos - lastpos));
+        lastpos = s.find_first_not_of(delemiters, pos);
+        pos = s.find_first_of(delemiters, lastpos);
+    }
+}
