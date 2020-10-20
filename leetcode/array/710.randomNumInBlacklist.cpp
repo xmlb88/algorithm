@@ -36,11 +36,71 @@ public:
 
 class Solution {
 public:
+    int sz;
+    unordered_map<int, int> mapping;
     Solution(int N, vector<int>& blacklist) {
+        sz = N - blacklist.size();
+        for (int b : blacklist) {
+            mapping[b] = 666;
+        }
+        int last = N - 1;
+        
+        for (int b : blacklist) {
+            if (b >= sz) {
+                continue;
+            }
+            while (mapping.count(last)) {
+                last--;
+            }
+            mapping[b] = last;
+            last--;
+        }
+
 
     }
     
     int pick() {
+        int index = rand() % sz;
 
+        if (mapping.count(index)) {
+            return mapping[index];
+        }
+
+        return index;
+    }
+};
+
+
+class Solution {
+public:
+    int sz;
+    unordered_map<int, int> mapping;
+    Solution(int N, vector<int>& blacklist) {
+        sz = N - blacklist.size();
+        for (int n : blacklist) {
+            mapping[n] = 666;
+        }
+        
+        int last = N - 1;
+        for (int n : blacklist) {
+            if (n >= sz) {
+                continue;
+            }
+
+            while (mapping.count(last)) {
+                last--;
+            }
+
+            mapping[n] = last;
+            last--;
+        }
+    }
+    
+    int pick() {
+        int index = rand() % sz;
+        if (mapping.count(index)) {
+            return mapping[index];
+        }
+        return index;
     }
 };
