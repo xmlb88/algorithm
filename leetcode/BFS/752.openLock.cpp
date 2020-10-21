@@ -2,6 +2,7 @@
 #include <set>
 #include <queue>
 #include <string>
+#include <unordered_set>
 using namespace std;
 
 // int openLock(vector<string>deadends, string target) {
@@ -77,13 +78,13 @@ string minusOne(string s, int j) {
 
 int openLock(vector<string> deadends, string target) {
     // 记录要跳过的死亡密码
-    set<string> deads;
+    unordered_set<string> deads;
     for (string s : deadends) {
         deads.insert(s);
     }
 
     // 记录已经穷举过的密码，防止走回头路
-    set<string> visited;
+    unordered_set<string> visited;
     queue<string> q;
 
     // 从起点开始启动广度优先搜索
