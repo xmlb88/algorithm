@@ -107,7 +107,7 @@ int openLock(vector<string> deadends, string target) {
             }
 
             // 将一个节点的未遍历相邻节点加入队列
-            for (int j = 0; i < 4; j++) {
+            for (int j = 0; j < 4; j++) {
                 string up = plusOne(cur, j);
                 if (visited.find(up) == visited.end()) {
                     q.push(up);
