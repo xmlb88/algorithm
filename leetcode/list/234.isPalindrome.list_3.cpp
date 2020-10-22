@@ -2,7 +2,7 @@
 #include "listNode.h"
 using namespace std;
 
-// µÝ¹éºóÐòÅÐ¶Ï
+// ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 ListNode* left;
 bool isPalindrome(ListNode* head) {
     left = head;
@@ -18,7 +18,7 @@ bool palind(ListNode* head) {
     return res;
 }
 
-// ·´×ªºó°ë¶Îºó½øÐÐ¶Ô±È
+// ï¿½ï¿½×ªï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½Ð¶Ô±ï¿½
 bool isPalindrome(ListNode* head) {
     if (head == NULL || head -> next == NULL) return true;
 
@@ -58,3 +58,23 @@ bool isPalindrome(ListNode* head) {
 
 1 2 3 4 5
 1 2 3 4 5 6
+
+// review day_exercise
+#include <iostream>
+#include "listNode.h"
+using namespace std;
+
+// é€’å½’åˆ¤æ–­
+ListNode* cur;
+bool isPalindrome(ListNode* head) {
+    cur = head;
+    return palind(head);
+}
+
+bool palind(ListNode* head) {
+    if (head == NULL) return true;
+    bool res = palind(head -> next);
+    res = res && (head -> val == cur -> val);
+    cur = cur -> next;
+    return res;
+}
