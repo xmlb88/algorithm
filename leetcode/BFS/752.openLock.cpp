@@ -127,3 +127,64 @@ int openLock(vector<string> deadends, string target) {
     }
     return -1;
 }
+
+
+// review 
+
+string plusOne(string s, int j) {
+    string res = s;
+    if (res[j] == '9') res[j] = '0';
+    else res[j] += 1;
+    return res;
+}
+
+string minusOne(string s, int j) {
+    string res = s;
+    if (res[j] == '0') res[j] = '9';
+    else res[j] -= 1;
+    return res;
+}
+
+int openLock(vector<string>& deadends, string target) {
+    unordered_set<string> deads;
+    for (string end : deadends) {
+        deads.insert(end);
+    }
+
+    unordered_set<string> visited;
+    queue<string> q;
+    int step = 0;
+    q.push("0000");
+    visited.insert("0000");
+    while (!q.empty()) {
+        int sz = q.size();
+        for (int i = 0; i < sz; i++) {
+            string cur = q.front();
+            q.pop();
+
+            if (cur == target) {
+                return step;
+            }
+
+            if (deads.count(cur)) {
+                continue;
+            }
+
+            for (int j = 0; j < 4; j++) {
+                string up = plusOne(cur, j);
+                if (!visited.count(up)) {
+                    q.push(up);
+                    visited.push(up);
+                }
+
+                string down = minusOne(cur, j);
+                if (!visited.count(down)) {
+                    q.push(down);
+                    visited.push(down);
+                }
+            }
+        }
+        step++;
+    }
+    return -1;
+}
