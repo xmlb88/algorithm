@@ -73,3 +73,15 @@ vector<string> split(string& s, const string& delemiters = ",") {
         pos = s.find_first_of(delemiters, lastpos);
     }
 }
+
+// review 
+vector<string> split(string& s, const string& delemiters = ',') {
+    string::size_type lastpos = s.find_first_not_of(delemiters, 0);
+    string::size_type pos = s.find_first_of(delemiters, lastpos);
+    vector<string> result;
+    while (lastpos != string::npos || pos != string::npos) {
+        result.push_back(s.substr(lastpos, pos - lastpos));
+        lastpos = s.find_first_not_of(delemiters, pos);
+        pos = s.find_first_of(delemiters, lastpos);
+    }
+}
