@@ -1,0 +1,13 @@
+1. O(b)
+2. O(b)
+3. O(1)
+4. O(a / b)
+5. O(logN)
+6. O(sqrt(n))
+7. O(N)
+8. O(N)
+9. O(N2)
+10. O(log10N)  -- O(logN)
+11.  -- O(kc^k)
+12. O(NlogN) -- O(blogb + alogb)
+

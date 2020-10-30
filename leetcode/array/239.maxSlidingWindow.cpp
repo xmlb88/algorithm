@@ -5,7 +5,7 @@ using namespace std;
 // TODO: 
 // ±©Á¦ ³¬Ê±
 vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-    if (k == 1) return nums;
+    if (k == 1 || nums.empty()) return nums;
     vector<int> res;
     for (int i = 0; i <= nums.size() - k; i++) {
         int maxNum = nums[i];
