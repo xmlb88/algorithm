@@ -18,7 +18,8 @@
         "new": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "unordered_set": "cpp"
     },
     "sqltools.connections": [
         {
