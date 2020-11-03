@@ -2,19 +2,24 @@
 #include <string>
 using namespace std;
 
-// 中间2个空格 WA
+// 中间2个空格 需要处理
 string reverseWords(string s) {
     if (s.empty()) return s;
     string res;
-    for (int i = s.size() - 1; i >= 0; i--) {
-        while (s[i] == ' ') i--;
+    int i = s.size() - 1;
+    while (i >= 0) {
+        while (i >= 0 && s[i] == ' ') i--;
+        if (i < 0) break;
         int j = i;
-        while (s[j] != ' ' && j >= -1) j--;
+        while (j >= 0 && s[j] != ' ') j--;
+
         res += s.substr(j + 1, i - j);
         res += ' ';
         i = j;
     }
-    return trim(res);
+    
+    if (!res.empty()) res.pop_back();
+    return res;
 }
 
 string trim(string s) {
