@@ -28,10 +28,32 @@ class Solution {
     }
 }
 
-bool isNumber(string s) {
-    if (s.empty()) return false;
+bool isNumber (string s) {
+    int n = s.size();
+    int index = 0;
+    bool hasDot = false, hasE = false, hasOp = false, hasNum = false;
+    while (index < n && s[index] == ' ') index++;
+    while (index < n) {
+        if ('0' <= s[index] && s[index] <= '9') {
+            hasNum = true;
+        } else if (s[index] == 'e' || s[index] == 'E') {
+            if (hasE || !hasNum) return false;
+            hasE = true;
+            hasOp = false;
+            hasDot = false;
+            hasNum = false;
+        } else if (s[index] == '+' || s[index] == '-') {
+            if (hasOp || hasNum || hasDot) return false;
+            hasOp = true;
+        } else if (s[index] == '.') {
+            if (hasDot || hasE) return false;
+            hasDot = true;
+        } else if (s[index] == ' ') {
+            break;
+        } else return false;
+        index++;
+    }
 
-    bool isNum = false, isDot = false, isEe = false;
-    
-
+    while (index < n && s[index] == ' ') index++;
+    return hasNum && index == n;
 }
