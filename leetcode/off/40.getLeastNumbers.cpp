@@ -89,11 +89,49 @@ int partition(vector<int>& nums, int l, int r) {
 
 vector<int> getLeastNumbers(vector<int>& arr, int k) {
     srand((unsigned)time(NULL));
+    random_selected(arr, k, l, r);
+    vector<int> vec;
+    for (int i = 0; i < k; i++) {
+        vec.push_back(arr[i]);
+    }
+    return vec;
+}
+
+void random_selected(vector<int>& arr, int k, int l, int r) {
+    if (l >= r) return;
+    int index = random_partition(arr, l, r);
+    if (index == k) return;
+    else if (index < k) {
+        random_selected(arr, k, index + 1, r);
+    } else if (index > k) {
+        random_selected(arr, k, l, index - 1);
+    }
 
 }
 
-int random_selected(vector<int>& arr, int k, int l, int r) {
-    if (l >= r) return;
-    
+int random_partition(vector<int>& arr, int l, int r) {
+    int i = rand() % (r - l + 1) + l;
+    swap(arr[l], arr[i]);
+    return partition(arr, l, r);
+}
+
+int partition(vector<int>& arr, int l, int r) {
+    int pivot = arr[l];
+    while (l < r) {
+        while (l < r && arr[r] >= pivot) {
+            r--;
+        }
+        if (l < r) {
+            arr[l] = arr[r];
+        }
+        if (l < r && arr[l] <= pivot) {
+            l++;
+        }
+        if (l < r) {
+            arr[r] = arr[l];
+        }
+    }
+    arr[l] = pivot;
+    return l;
 }
 
