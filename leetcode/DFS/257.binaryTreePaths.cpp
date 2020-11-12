@@ -4,15 +4,23 @@
 #include "tree/treeNode.h"
 using namespace std;
 
-vector<string> res;
 vector<string> binaryTreePaths(TreeNode* root) {
-
+    string path;
+    vector<string> paths;
+    dfs(root, path, paths);
+    return paths;
 }
 
-void path(TreeNode* root, string& s) {
-    if (root == NULL) return;
-
+void dfs(TreeNode* root, string path, vector<string>& paths) {
+    if (!root) return;
+    
+    path += to_string(root -> val);
     if (!root -> left && !root -> right) {
-        s += 
+        paths.push_back(path);
+        return;
     }
+
+    path += "->";
+    dfs(root -> left, path, paths);
+    dfs(root -> right, path, paths);
 }
