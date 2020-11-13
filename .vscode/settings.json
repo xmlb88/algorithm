@@ -21,7 +21,8 @@
         "limits": "cpp",
         "unordered_set": "cpp",
         "chrono": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "functional": "cpp"
     },
     "sqltools.connections": [
         {
