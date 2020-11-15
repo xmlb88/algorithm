@@ -104,3 +104,78 @@ int longestPalindromeSubsuq(string s) {
 
     return dp[0][n - 1];
 }
+
+// review 2020年10月29日11:07:25
+int longestPalindromeSubseq(string s) {
+    return dp(s, 0, s.length() - 1);
+}
+
+int dp(string s, int i, int j) {
+    // base case
+    if (i > j) return 0;
+    if (i == j) return 1;
+
+    if (s[i] == s[j]) return 2 + dp(s, i + 1, j - 1);
+    else return max(dp(s, i + 1, j), dp(s, i, j - 1));
+}
+
+// 备忘录
+vector<vector<int>> memo;
+int longestPalindromeSubseq(string s) {
+    int n = s.size();
+    memo.resize(n, vector<int> (n, -1));
+    return dp(s, 0, n - 1);
+}
+
+int dp(string s, int i, int j) {
+    // base case 
+    if (i > j) return 0;
+    if (i == j) return 1;
+
+    if (memo[i][j] != -1) return memo[i][j];
+    if (s[i] == s[j]) memo[i][j] = 2 + dp(s, i + 1, j - 1);
+    else memo[i][j] = max(dp(s, i + 1, j), dp(s, i, j - 1));
+
+    return memo[i][j];
+}
+
+// 迭代
+int longestPalindromeSubseq(string s) {
+    int n = s.size();
+    vector<vector<int>> dp(n, vector<int> (n, 0));
+
+    for (int i = 0; i < n; i++) {
+        dp[i][i] = 1;
+    }
+
+    for (int i = n - 2; i >= 0; i--) {
+        for (int j = i + 1; j < n; j++) {
+            if (s[i] == s[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+            else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+        }
+    }
+
+    return dp[0][n - 1];
+}
+
+// 状态压缩一维
+int longestPalindromeSubseq(string s) {
+    int n = s.size();
+    // base case: 一维dp数组全初始化为1
+    vector<int> dp(n, 1);
+
+    for (int i = n - 2; i >= 0; i--) {
+        // 存储dp[i + 1][j - 1] 的变量
+        int pre = 0;
+        for (int j = i + 1; j < n; j++) {
+            int temp = dp[j];
+            if (s[i] == s[j]){
+                // dp[i][j] = 2 + dp[i + 1][j - 1];
+                dp[j] = pre + 2;
+            } else dp[j] = max(dp[j], dp[j - 1]);
+            // 到下一轮循环 pre就是dp[i + 1][j - 1]了
+            pre = temp;
+        }
+    }
+    return dp[n - 1];
+}
