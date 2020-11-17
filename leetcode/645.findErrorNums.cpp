@@ -39,3 +39,25 @@ vector<int> findErrorNums(vector<int>& nums) {
     
     return {dup, miss};
 }
+
+// review
+vector<int> findErrorNums(vector<int>& nums) {
+    int dup, miss;
+
+    for (int i = 0; i < nums.size(); i++) {
+        int n = abs(nums[i]);
+        if (nums[n - 1] < 0) {
+            dup = n;
+            continue;
+        }
+        nums[n - 1] *= -1;
+    }
+
+    for (int i = 0; i < nums.size(); i++) {
+        if (nums[i] > 0) {
+            miss = i + 1;
+            break;
+        }
+    }
+    return {dup, miss};
+}
