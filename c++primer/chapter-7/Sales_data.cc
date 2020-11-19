@@ -2,6 +2,10 @@
 #include "Sales_data.h"
 using namespace std;
 
+Sales_data::Sales_data(istream &is) {
+    read(is, *this);
+}
+
 double Sales_data::avg_price() const {
     if (units_sold)
         return revenue / units_sold;
