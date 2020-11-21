@@ -173,3 +173,117 @@ ListNode* sortList(ListNode* head) {
 
     return dummy -> next;
 }
+
+// review 2020年11月21日10:10:37 day
+// 归并排序
+// 递归
+ListNode* sortList(ListNode* head) {
+    // base case
+    if (!head || !head -> next) return head;
+
+    // 找中间结点
+    // ListNode* fast = head -> next;
+    // ListNode* slow = head;
+    // while (fast && fast -> next)
+    ListNode* fast = head;
+    ListNode* slow = head;
+    while (fast -> next && fast -> next -> next) {
+        fast = fast -> next -> next;
+        slow = slow -> next;
+    }
+
+    // 断链
+    ListNode* second = slow -> next;
+    slow -> next = nullptr;
+
+    // 递归分开排序
+    ListNode* left = sortList(head);
+    ListNode* right = sortList(second);
+
+    // 合并
+    ListNode* dummy = new ListNode(0);
+    ListNode* cur = dummy;
+    while (left && right) {
+        if (left -> val < right -> val) {
+            cur -> next = left;
+            left = left -> next;
+        } else {
+            cur -> next = right;
+            right = right -> next;
+        }
+        cur = cur -> next;
+    }
+
+    if (left) cur -> next = left;
+    if (right) cur -> next = right;
+
+    return dummy -> next;
+}
+
+// 迭代
+ListNode* sortList(ListNode* head) {
+    if (!head || !head -> next) return head;
+
+    // 先求长度
+    ListNode* node = head;
+    int length = 0;
+    while (node) {
+        node = node -> next;
+        length++;
+    }
+
+    // 分段cut再merge
+    // 第一次cut size = 1，然后根据归并的思路，cut的大小依次 *2
+    // 边界条件size < length，size == n时表示链表的每个长度的段已有序
+    ListNode* dummy = new ListNode(0);
+    dummy -> next = head;
+    for (int size = 1; size < length; size *= 2) {
+        ListNode* cur = dummy -> next;
+        ListNode* tail = dummy;
+        while (cur) {
+            ListNode* left = cur;
+            ListNode* right = cut(left, size);
+            cur = cut(right, size);
+            tail -> next = merge(left, right);
+            while (tail -> next) tail = tail -> next;
+        }
+    }
+
+    return dummy -> next;
+}
+
+// 4 5 3 2 4 n = 3
+ListNode* cut(ListNode* head, int n) {
+    ListNode* p = head;
+    while (p && n > 1) {
+        p = p -> next;
+        n--;
+    }
+
+    if (p == nullptr) return nullptr;
+    ListNode* node = p -> next;
+    p -> next = nullptr;
+    return node;
+}
+
+ListNode* merge(ListNode* l1, ListNode* l2) {
+    ListNode* dummy = new ListNode(0);
+    ListNode* cur = dummy;
+    while (l1 && l2) {
+        if (l1 -> val < l2 -> val) {
+            cur -> next = l1;
+            l1 = l1 -> next;
+        } else {
+            cur -> next = l2;
+            l2 = l2 -> next;
+        }
+        cur = cur -> next;
+    }
+
+    if (l1) cur -> next = l1;
+    if (l2) cur -> next = l2;
+
+    ListNode* node = dummy -> next;
+    delete(dummy);
+    return node;
+}
