@@ -4,42 +4,45 @@ using namespace std;
 
 class Screen {
 public:
-    // ¸ù¾İ¶ÔÏóÊÇ·ñÊÇconstÖØÔØÁËdisplayº¯Êı
+    friend class Window_mgr;
+
+    // ç±»å‹åˆ«å
+    typedef string::size_type pos;
+    // using pos = string::size_type;
+
+    // æ ¹æ®å¯¹è±¡æ˜¯å¦æ˜¯consté‡è½½displayå‡½æ•°
     Screen &display(ostream &os) {
         do_display(os); return *this;
     }
     const Screen &display(ostream &os) const {
         do_display(os); return *this;
     }
+    // Screen &display(std::ostream &os) 
+    //               { do_display(os); return *this; }
+    // const Screen &display(std::ostream &os) const
+    //               { do_display(os); return *this; }
 
     Screen &set(char);
     Screen &set(pos, pos, char);
 
-    inline Screen &Screen::set(char c) {
-        contents[cursor] = c;   // ÉèÖÃµ±Ç°¹â±êËùÔÚÎ»ÖÃµÄĞÂÖµ
-        return *this;   // ½«this¶ÔÏó×÷Îª×óÖµ·µ»Ø
-    }
-    inline Screen &Screen::set(pos r, pos col, char ch) {
-        contents[r * width + col] = ch;
-        return *this;
-    }
-
+    // å¯å˜æ•°æ®æˆå‘˜å‡½æ•°
     void some_member() const;
-    // typedef string::size_type pos;
-    using pos = string::size_type;
+    
+    // æ„é€ å‡½æ•°
     Screen() = default;
+    // cursorè¢«å…¶ç±»å†…åˆå§‹å€¼åˆå§‹åŒ–ä¸º0
     Screen(pos ht, pos wd, char c) : height(ht), width(wd), 
     contents(ht * wd, c) {}
     char get() const {return contents[cursor];}
     inline char get(pos ht, pos wd) const;
     Screen &move(pos r, pos c);
 private:
-    // ¸ºÔğÏÔÊ¾ScreenµÄÄÚÈİ
-    void do_display(ostream &os) const {
-        os << contents;
-    }
-    
-    mutable size_t access_ctr; // ¿É±äÊı¾İ³ÉÔ±£¬¼´Ê¹ÔÚÒ»¸öconst¶ÔÏóÄÚÒ²ÄÜ±»ĞŞ¸Ä
+    // æ˜¾ç¤ºScreenå†…å®¹
+    void do_display(ostream &os) const {os << contents;}
+
+    // å¯å˜æ•°æ®æˆå‘˜ï¼Œå³ä½¿åœ¨ä¸€ä¸ªconstå¯¹è±¡å†…ä¹Ÿèƒ½è¢«ä¿®æ”¹
+    mutable size_t access_ctr;
+
     pos cursor = 0;
     pos height = 0, width = 0;
     string contents;
@@ -58,6 +61,15 @@ char Screen::get(pos r, pos c) const {
 }
 
 void Screen::some_member() const {
-    ++access_ctr;   // ±£´æÒ»¸ö¼ÆÊıÖµ£¬ÓÃÓÚ¼ÇÂ¼³ÉÔ±º¯Êı±»µ÷ÓÃµÄ´ÎÊı
-    // ¸Ã³ÉÔ±ĞèÒªÍê³ÉµÄÆäËû¹¤×÷
+    ++access_ctr;
+}
+
+inline Screen &Screen::set(char c) {
+    contents[cursor] = c;
+    return *this;
+}
+
+inline Screen &Screen::set(pos r, pos col, char ch) {
+    contents[r * width + col] = ch;
+    return *this;
 }
