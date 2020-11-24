@@ -23,7 +23,8 @@
         "chrono": "cpp",
         "complex": "cpp",
         "functional": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "bitset": "cpp"
     },
     "sqltools.connections": [
         {
