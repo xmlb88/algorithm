@@ -100,3 +100,39 @@ string removeDuplicateLetters(string s) {
     reverse(result.begin(), result.end());
     return result;
 }
+
+
+// 同1081
+// review 2020年11月16日10:45:03
+string removeDuplicateLetters(string s) {
+    if (s.empty()) return s;
+    vector<bool> inStack(256, false);
+    vector<int> count(256, 0);
+    stack<char> st;
+
+    for (char c : s) {
+        count[c]++;
+    }
+
+    for (char c : s) {
+        count[c]--;
+        if (inStack[c]) continue;
+
+        while (!st.empty() && st.top() > c && count[st.top()] > 0) {
+            inStack[st.top()] = false;
+            st.pop();
+        }
+
+        st.push(c);
+        inStack[c] = true;
+    }
+
+    string res;
+    while (!st.empty()) {
+        res += st.top();
+        st.pop();
+    }
+
+    reverse(res.begin(), res.end());
+    return res;
+}

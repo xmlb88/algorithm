@@ -18,7 +18,13 @@
         "new": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "unordered_set": "cpp",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "functional": "cpp",
+        "typeinfo": "cpp",
+        "bitset": "cpp"
     },
     "sqltools.connections": [
         {

@@ -13,3 +13,15 @@ TreeNode* convertBST(TreeNode* root) {
     convertBST(root -> left);
     return root;
 }
+
+// review
+int sum = 0;
+TreeNode* convertBST(TreeNode* root) {
+    if (root == nullptr) return root;
+
+    convertBST(root -> right);
+    sum += root -> val;
+    root -> val = sum;
+    convertBST(root -> left);
+    return root;
+}

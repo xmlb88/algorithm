@@ -115,7 +115,7 @@ bool dp(string s, int i, string p, int j) {
         if ((n - j) % 2 == 1) return false;
 
         for (int k = j + 1; k < n; k += 2) {
-            if (p[j] != '*') return false;
+            if (p[k] != '*') return false;
         }
 
         return true;
