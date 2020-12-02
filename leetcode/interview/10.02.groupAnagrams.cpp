@@ -61,3 +61,19 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
     }
     return ans;
 }
+
+// review 2020Äê12ÔÂ2ÈÕ18:03:05
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    unordered_map<string, vector<string>> m;
+    for (string t : strs) {
+        string s = t;
+        sort(s.begin(), s.end());
+        m[s].push_back(t);
+    }
+
+    vector<vector<string>> res;
+    for (auto i : m) {
+        res.push_back(i.second);
+    }
+    return res;
+}
