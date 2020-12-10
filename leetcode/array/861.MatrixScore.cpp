@@ -22,3 +22,22 @@ int matrixScore(vector<vector<int>>& A) {
     return res;
 }
 
+// review 2020Äê12ÔÂ9ÈÕ17:32:45
+int matrixScore(vector<vector<int>>& A) {
+    int n = A.size();
+    if (n == 0) return 0;
+    int m = A[0].size();
+
+    int sum = n << (m - 1);
+    for (int j = 1; j < m; j++) {
+        int ones = 0;
+        for (int i = 0; i < n; i++) {
+            if (A[i][0] == 1) {
+                ones += A[i][j];
+            } else ones += (1 - A[i][j]);
+        }
+        int k = max(ones, n - ones);
+        sum += k << (m - j - 1);
+    }
+    return sum;
+}

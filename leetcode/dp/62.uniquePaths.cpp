@@ -21,3 +21,24 @@ int uniquePaths(int m, int n) {
     }
     return path[n - 1];
 }
+
+// review 2020Äê12ÔÂ9ÈÕ16:50:14
+int uniquePaths(int m, int n) {
+    vector<vector<int>> path(m, vector<int> (n, 1));
+    for (int i = 1; i < m; i++) {
+        for (int j = 1; j < n; j++) {
+            path[i][j] = path[i - 1][j] + path[i][j - 1];
+        }
+    }
+    return path[m - 1][n - 1];
+}
+
+int uniquePaths(int m, int n) {
+    vector<int> path(m, 1);
+    for (int j = 1; j < n; j++) {
+        for (int i = 1; i < m; i++) {
+            path[i] += path[i - 1];
+        }
+    }
+    return path[m - 1];
+}
