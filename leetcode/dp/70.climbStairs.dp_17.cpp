@@ -12,3 +12,7 @@ int climbStairs(int n) {
     }
     return second;
 }
+
+int climbStairs(int n) {
+    
+}
