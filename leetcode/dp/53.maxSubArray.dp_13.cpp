@@ -101,3 +101,27 @@ int maxSubArray(vector<int>& nums) {
 
     return max_sum;
 }
+
+
+// preview
+int maxSubArray(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n);
+    dp[0] = nums[0];
+    int res = nums[0];
+    for (int i = 1; i < n; ++i) {
+        dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+        res = max(res, dp[i]);
+    }
+    return res;
+}
+
+int maxSubArray(vector<int>& nums) {
+    int n = nums.size();
+    int curr = nums[0], res = nums[0];
+    for (int i = 1; i < n; ++i) {
+        curr = max(curr + nums[i], nums[i]);
+        res = max(res, curr);
+    }
+    return res;
+}
