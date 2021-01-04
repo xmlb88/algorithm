@@ -28,3 +28,9 @@ int findNumberOfLIS(vector<int>& nums) {
     }
     return number;
 }
+
+
+
+int findNumberOfLIS(vector<int>& nums) {
+    
+}

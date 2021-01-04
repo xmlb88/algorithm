@@ -103,7 +103,7 @@ int maxSubArray(vector<int>& nums) {
 }
 
 
-// preview
+// review
 int maxSubArray(vector<int>& nums) {
     int n = nums.size();
     vector<int> dp(n);
