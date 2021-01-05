@@ -64,3 +64,31 @@ int dp(vector<int>& nums, int start) {
     memo[start] = max(dp(nums, start + 1), nums[start] + dp(nums, start + 2));
     return memo[start];
 }
+
+// review 2021年1月5日20:43:43
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+    vector<int> dp(n);
+    dp[0] = nums[0], dp[1] = max(nums[0], nums[1]);
+    for (int i = 2; i < n; i++) {
+        dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
+    }
+
+    return dp[n - 1];
+}
+
+// 优化空间
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+    int prev = nums[0], curr = max(nums[0], nums[1]);
+    for (int i = 2; i < n; i++) {
+        int temp = max(curr, prev + nums[i]);
+        prev = curr;
+        curr = temp;
+    }
+    return curr;
+}
