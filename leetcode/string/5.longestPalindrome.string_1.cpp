@@ -42,3 +42,33 @@ string palindrome(string s, int l, int r) {
 
     return s.substr(l + 1, r - l - 1);
 }
+
+
+// review 2021年1月8日17:29:06
+// 暴力方法
+string longestPalindrome(string s) {
+    int n = s.size();
+    if (n <= 1) return s;
+    string res;
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            if (j - i + 1 > res.size() && valid(s, i, j)) {
+                res = s.substr(i, j - i + 1);
+            }
+        }
+    }
+    return res;
+}
+
+bool valid(string& s, int left, int right) {
+    while (left < right) {
+        if (s[left] != s[right]) return false;
+        left++; right--;
+    }
+    return true;
+}
+
+// dp动态规划
+string longestPalingrome(string s) {
+    
+}
