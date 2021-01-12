@@ -129,3 +129,64 @@ public:
         return s;
     }
 };
+
+//review
+class unionFind {
+private:
+    vector<int> f, rank;
+    int n;
+public:
+    unionFind(int _n) {
+        n = _n;
+        f.resize(n);
+        rank.resize(n, 1);
+        iota(f.begin(), f.end(), 0);
+    }
+
+    int find(int x) {
+        if (f[x] == x) {
+            return x;
+        } else {
+            f[x] = find(f[x]);
+        }
+        return f[x];
+    }
+
+    void unionSet(int x, int y) {
+        int fx = find(x), fy = find(y);
+        if (fx == fy) return;
+
+        if (rank[fx] < rank[fy]) {
+            swap(fx, fy);
+        }
+
+        f[fy] = fx;
+        rank[fx] += rank[fy];
+    }
+};
+
+class Solution {
+public:
+    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) {
+        unionFind uf(s.length());
+        for (vector<int>& it : pairs) {
+            uf.unionSet(it[0], it[1]);
+        }
+
+        unordered_map<int, vector<int>> mp;
+        for (int i = 0; i < s.length(); i++) {
+            mp[uf.find(i)].emplace_back(s[i]);
+        }
+
+        for (auto& it : mp) {
+            sort(it.second.begin(), it.second.end(), greater<int>());
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            int x = uf.find(i);
+            s[i] = mp[x].back();
+            mp[x].pop_back();
+        }
+        return s;
+    }
+};
