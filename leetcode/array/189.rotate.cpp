@@ -62,3 +62,7 @@ void rotate(vector<int>& nums, int k) {
         } while (i != start);
     }
 }
+
+void rotate(vector<int>&nums, int k) {
+    
+}
