@@ -79,3 +79,37 @@ int minCut(string s) {
 
     return dp[n - 1];
 }
+
+// review
+int minCut(string s) {
+    // 先构造isPalind数组，O(1)判断s[i, j]是否是回文串
+    int n = s.size();
+    vector<vector<bool>> isPalind(n, vector<bool> (n, false));
+
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = i; j < n; j++) {
+            if (s[i] == s[j]) {
+                if (j - i <= 1) isPalind[i][j] = true;
+                else isPalind[i][j] = isPalind[i + 1][j - 1];
+            }
+        }
+    }
+
+    // dp[i] 与dp[0...i - 1]比较
+    vector<int> dp(n);
+    iota(dp.begin(), dp.end(), 0);
+    for (int i = 1; i < n; i++) {
+        if (isPalind[0][i]) {
+            dp[i] = 0;
+            continue;
+        }
+
+        for (int j = 0; j < i; j++) {
+            if (isPalind[j + 1][i]) {
+                dp[i] = min(dp[i], dp[j] + 1);
+            }
+        }
+    }
+
+    return dp[n - 1];
+}
