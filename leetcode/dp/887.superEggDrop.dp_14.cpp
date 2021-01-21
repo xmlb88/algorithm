@@ -175,3 +175,13 @@ int superEggDrop(int K, int N) {
     memo[key] = res;
     return res;
 }
+
+// review
+int superEggDrop(int K, int N) {
+    if (K == 1) return N;
+    if (N == 0) return 0;
+
+    for (int i = 1; i <= N; i++) {
+        if ()
+    }
+}
