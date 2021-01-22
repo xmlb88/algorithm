@@ -35,3 +35,35 @@ int minCost(vector<vector<int>>& costs) {
     }
     return min(prev[0], min(prev[1], prev[2]));
 }
+
+// review
+
+int minCost(vector<vector<int>>& costs) {
+    int n = costs.size();
+    if (n == 0) return 0;
+    vector<vector<int>> dp(n, vector<int>(3));
+    dp[0] = costs[0];
+    for (int i = 1; i < n; i++) {
+        dp[i][0] = costs[i][0] + min(dp[i - 1][1], dp[i - 1][2]);
+        dp[i][1] = costs[i][1] + min(dp[i - 1][0], dp[i - 1][2]);
+        dp[i][2] = costs[i][2] + min(dp[i - 1][0], dp[i - 1][1]);
+    }
+
+    return min(dp[n - 1][0], min(dp[n - 1][1], dp[n - 1][2]));
+}
+
+// ¿Õ¼äÓÅ»¯
+int minCost(vector<vector<int>>& costs) {
+    int n = costs.size();
+    if (n == 0) return 0;
+    vector<int> prev = costs[0];
+    for (int i = 1; i < n; i++) {
+        vector<int> curr(3);
+        curr[0] = costs[i][0] + min(prev[1], prev[2]);
+        curr[1] = costs[i][1] + min(prev[0], prev[2]);
+        curr[2] = costs[i][2] + min(prev[0], prev[1]);
+        prev = curr;
+    }
+
+    return min(prev[0], min(prev[1], prev[2]));
+}
