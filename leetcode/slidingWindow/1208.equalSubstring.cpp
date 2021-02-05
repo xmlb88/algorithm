@@ -18,3 +18,20 @@ int equalSubstring(string s, string t, int maxCost) {
     }
     return right - left;
 }
+
+
+int equalSubstring(string s, string t, int maxCost) {
+    int left = 0, right = 0;
+    int sumCost = 0;
+    int len = 0;
+    while (right < s.size()) {
+        sumCost += abs(s[right] - t[right]);
+        right++;
+
+        if (sumCost > maxCost) {
+            sumCost -= abs(s[left] - t[left]);
+            left++;
+        }
+    }
+    return right - left;
+}
