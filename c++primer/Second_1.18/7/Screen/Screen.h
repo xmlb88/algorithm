@@ -2,8 +2,24 @@
 #define SCREEN_H
 
 #include <iostream>
+#include <vector>
+#include <string>
+
+class Screen;
+class Window_mgr {
+public:
+    // 窗口中每个屏幕的编号
+    using ScreenIndex = std::vector<Screen>::size_type;
+    // 按照编号将指定的Screen置为空白
+    void clear(ScreenIndex);
+private:
+    std::vector<Screen> screens;
+};
 
 class Screen {
+    // window_mgr的成员可以访问Screen类的私有部分
+    // friend class Window_mgr;
+    friend void Window_mgr::clear(ScreenIndex);
 public:
     typedef std::string::size_type pos;
     Screen() = default; // 因为Screen有另外一个构造函数，本函数必须
@@ -62,6 +78,12 @@ inline Screen& Screen::set(char c) {
 inline Screen& Screen::set(pos r, pos col, char ch) {
     contents[r * width + col] = ch;
     return *this;
+}
+
+void Window_mgr::clear(ScreenIndex i) {
+    // s是一个引用，指向我们想清空的那个屏幕
+    Screen &s = screens[i];
+    s.contents = std::string(s.height * s.width, ' ');
 }
 
 #endif
