@@ -31,3 +31,18 @@ vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
     }
     return {-1, -1};
 }
+
+
+vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
+    int sum_A = accumulate(A.begin(), A.end(), 0);
+    int sum_B = accumulate(B.begin(), B.end(), 0);
+    unordered_set st(B.begin(), B.end());
+// b + sum_a - a = a + sum_b - b
+    for (int a : A) {
+        int sub = (sum_B - sum_A + 2 * a) / 2;
+        if (st.find(sub) != st.end()) {
+            return {a, sub};
+        }
+    }
+    return {-1, -1};
+}
