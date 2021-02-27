@@ -78,5 +78,19 @@ int characterReplacement(string s, int k) {
 
 
 int characterReplacement(string s, int k) {
-    //TODO:
+    //
+    vector<int> num(26, 0);
+    int left = 0, right = 0;
+    int maxn = 0;
+    while (right < s.size()) {
+        num[s[right] - 'A']++;
+        maxn = max(maxn, num[s[right] - 'A']);
+        right++;
+
+        if (right - left - maxn > k) {
+            num[s[left] - 'A']--;
+            left++;
+        }
+    }
+    return right - left;
 }

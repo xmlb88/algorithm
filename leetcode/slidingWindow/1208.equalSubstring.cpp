@@ -35,3 +35,34 @@ int equalSubstring(string s, string t, int maxCost) {
     }
     return right - left;
 }
+
+int equalSubstring(string s, string t, int maxCost) {
+    int left = 0, right = 0;
+    int cost = 0;
+    while (right < s.size()) {
+        cost += abs(s[right] - t[right]);
+        right++;
+
+        if (cost > maxCost) {
+            cost -= abs(s[left] - t[left]);
+            left++;
+        }
+    }
+    return right - left;
+}
+
+
+int equalSubstring(string s, string t, int maxCost) {
+    int left = 0, right = 0;
+    int cost = 0;
+    while (right < s.size()) {
+        cost += abs(s[right] - t[right]);
+        right++;
+
+        if (cost > maxCost) {
+            cost -= abs(s[left] - t[left]);
+            left++;
+        }
+    }
+    return right - left;
+}
