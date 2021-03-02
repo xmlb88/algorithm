@@ -36,6 +36,58 @@ int maxTurbulenceSize(vector<int>& A) {
 
 // TODO:
 // sliding window
+int maxTurbulenceSize(vector<int>& A) {
+    int n = A.size();
+
+    if (n <= 1) return n;
+    if (n == 2) {
+        if (A[0] == A[1]) return 1;
+        return 2;
+    }
+
+    int left = 0, right = 1;
+    int maxLen = 0;
+
+    while (right < n - 1) {
+        ++right;
+        if ((A[right] > A[right - 1] && A[right - 2] > A[right - 1]) || (A[right] < A[right - 1] && A[right - 2] < A[right - 1])) {
+            maxLen = max(maxLen, right - left + 1);
+        } else {
+            if (A[right] != A[right - 1]) {
+                left = right - 1;
+                maxLen = max(maxLen, 2);
+            } else {
+                left = right;
+                ++right;
+                maxLen = max(maxLen, 1);
+            }
+        }
+    }
+    return maxLen;
+}
+
+// 4 8 12 16
+// TODO:
 int maxTurbulenceSize(vector<int>& arr) {
-    
+    int n = arr.size();
+    int maxLen = 1;
+    int left = 0, right = 0;
+
+    while (right < n - 1) {
+        if (left == right) {
+            if (arr[left] == arr[left + 1]) {
+                left++;
+            }
+            right++;
+        } else {
+            if (arr[right - 1] < arr[right] && arr[right] > arr[right + 1]) {
+                right++;
+            } else if (arr[right - 1] > arr[right] && arr[right] < arr[right + 1]) {
+                right++;
+            } else {
+                left = right;
+            }
+        }
+        maxLen = max(maxLen, right - left + 1);
+    }
 }
