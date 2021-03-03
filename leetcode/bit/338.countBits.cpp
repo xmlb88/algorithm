@@ -124,3 +124,65 @@ vector<int> countBits(int num) {
     }
     return res;
 }
+
+// 最后设置位
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    for (int i = 1; i <= n; ++i) {
+        count[i] = count[(i & (i - 1))] + 1;
+    }
+    return count;
+}
+
+// 奇偶性
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    for (int i = 1; i <= n; ++i) {
+        if (i & 1) count[i] = count[i >> 1] + 1;
+        else count[i] = count[i >> 1];
+    }
+    return count;
+}
+
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    for (int i = 1; i <= n; ++i) {
+        if (i & 1) count[i] = count[i - 1] + 1;
+        else count[i] = count[i >> 1];
+    }
+    return count;
+}
+
+// 最低有效位
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    for (int i = 1; i <= n; ++i) {
+        count[i] = count[i >> 1] + (i & 1);
+    }
+    return count;
+}
+
+// 最高有效位
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    int i = 0, b = 1;
+    while (b <= n) {
+        while (i < b && i + b <= n) {
+            count[i + b] = count[i] + 1;
+            ++i;
+        }
+        i = 0;
+        b <<= 1;
+    }
+    return count;
+}
+
+vector<int> countBits(int n) {
+    vector<int> count(n + 1);
+    for (int b = 1; b <= n; b <<= 1) {
+        for (int i = 0; i + b <= n; ++i) {
+            count[i + b] = count[i] + 1;
+        }
+    }
+    return count;
+}

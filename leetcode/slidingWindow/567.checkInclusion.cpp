@@ -81,3 +81,24 @@ bool checkInclusion(string t, string s) {
     }
     return false;
 }
+
+// review 2021Äê3ÔÂ3ÈÕ
+bool checkInclusion(string s1, string s2) {
+    vector<int> window(26, 0), need(26, 0);
+    for (char c : s1) {
+        need[c - 'a']++;
+    }
+
+    int left = 0, right = 0;
+    while (right < s2.size()) {
+        window[s2[right] - 'a']++;
+        right++;
+
+        if (right - left == s1.size()) {
+            if (window == need) return true;
+            window[s2[left] - 'a']--;
+            left++;
+        }
+    }
+    return false;
+}
