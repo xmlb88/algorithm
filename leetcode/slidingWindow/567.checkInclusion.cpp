@@ -102,3 +102,76 @@ bool checkInclusion(string s1, string s2) {
     }
     return false;
 }
+
+// ÓÅ»¯
+bool checkInclusion(string s1, string s2) {
+    int n = s1.size(), m = s2.size();
+    if (n > m) return false;
+    vector<int> window(26, 0);
+    for (int i = 0; i < n; ++i) {
+        window[s1[i] - 'a']--;
+        window[s2[i] - 'a']++;
+    }
+
+    int diff = 0;
+    for (int c : window) {
+        if (c != 0) ++diff;
+    }
+
+    if (diff == 0) return true;
+    for (int i = n; i < m; ++i) {
+        int x = s2[i] - 'a', y = s2[i - n] - 'a';
+        if (x == y) {
+            continue;
+        }
+
+        if (window[x] == 0) ++diff;
+        ++window[x];
+        if (window[x] == 0) --diff;
+        if (window[y] == 0) ++diff;
+        --window[y];
+        if (window[y] == 0) --diff;
+
+        if (diff == 0) return true;
+    }
+    return false;
+}
+
+// another way
+bool checkInclusion(string s1, string s2) {
+    int n = s1.size(), m = s2.size();
+    if (n > m) return false;
+
+    vector<int> cnt(26);
+    for (int i = 0; i < n; ++i) {
+        --cnt[s1[i] - 'a'];
+    }
+    
+    int left = 0, right = 0;
+    while (right < m) {
+        int x = s2[right] - 'a';
+        ++cnt[x];
+        ++right;
+        while (cnt[x] > 0) {
+            --cnt[s2[left] - 'a'];
+            ++left;
+        }
+        if (right - left == n) return true;
+    }
+    return false;
+
+    // int left = 0, right = 0;
+    // for (; right < m; ++right) {
+    //     int x = s2[right] - 'a';
+    //     ++cnt[x];
+    //     while (cnt[x] > 0) {
+    //         --cnt[s2[left] - 'a'];
+    //         ++left;
+    //     }
+
+    //     if (right - left + 1 == n) {
+    //         return true;
+    //     }
+    // }
+    // return false;
+}
