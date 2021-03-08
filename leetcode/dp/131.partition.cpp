@@ -89,3 +89,47 @@ vector<vector<string>> partition(string s) {
     dfs(s, 0);
     return res;
 }
+
+
+// review 2021Äê3ÔÂ8ÈÕ
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<vector<bool>> isPalind;
+vector<string> vec;
+vector<vector<string>> res;
+
+vector<vector<string>> partition(string s) {
+    isPalindRome(s);
+    backtrack(s, 0);
+    return res;
+}
+
+void backtrack(string& s, int index) {
+    if (index == s.size()) {
+        res.push_back(vec);
+        return;
+    }
+
+    for (int i = index; i < s.size(); ++i) {
+        if (isPalind[index][i]) {
+            vec.push_back(s.substr(index, i - index + 1));
+            backtrack(s, i + 1);
+            vec.pop_back();
+        }
+    }
+}
+
+void isPalindRome(string s) {
+    int n = s.size();
+    isPalind.resize(n, vector<bool> (n, false));
+
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i; j < n; ++j) {
+            if (j - i + 1 <= 2 && s[i] == s[j]) isPalind[i][j] = true;
+            else if (s[i] == s[j]) isPalind[i][j] = isPalind[i + 1][j - 1];
+        }
+    }
+}

@@ -60,3 +60,38 @@ public:
  * int param_3 = obj->peek();
  * bool param_4 = obj->empty();
  */
+
+// review 2021Äê3ÔÂ5ÈÕ
+class MyQueue{
+private:
+    stack<int> stackIn, stackOut;
+public:
+    MyQueue() {}
+    void push(int x) {
+        stackIn.push(x);
+    }
+
+    void trans() {
+        while (!stackIn.empty()) {
+            stackOut.push(stackIn.top());
+            stackIn.pop();
+        }
+    }
+
+    int pop() {
+        if (stackOut.empty()) trans();
+        int x = stackOut.top();
+        stackOut.pop();
+        return x;
+    }
+
+    int peek() {
+        if (stackOut.empty()) trans();
+        int x = stackOut.top();
+        return x;
+    }
+
+    bool empty() {
+        return stackIn.empty() && stackOut.empty();
+    }
+};
