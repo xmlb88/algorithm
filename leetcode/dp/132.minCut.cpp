@@ -113,3 +113,73 @@ int minCut(string s) {
 
     return dp[n - 1];
 }
+
+
+// review 2021年3月9日
+// 中心扩展法创建isPalind数组
+vector<vector<bool>> isPalind;
+int minCut(string s) {
+    int n = s.size();
+    isPalind.resize(n, vector<bool> (n, false));
+    for (int i = 0; i < n; ++i) {
+        isPalindRome(s, i, i);
+        isPalindRome(s, i, i + 1);
+    }
+
+    vector<int> dp(n);
+    iota(dp.begin(), dp.end(), 0);
+    for (int i = 1; i < n; ++i) {
+        if (isPalind[0][i]) {
+            dp[i] = 0;
+            continue;
+        }
+
+        for (int j = 1; j <= i; ++j) {
+            if (isPalind[j][i]) {
+                dp[i] = min(dp[i], dp[j - 1] + 1);
+            }
+        }
+    }
+
+    return dp[n - 1];
+}
+
+void isPalindRome(const string& s, int left, int right) {
+    while (left >= 0 && right < s.size() && s[left] == s[right]) {
+        isPalind[left][right] = true;
+        --left;
+        ++right;
+    }
+}
+
+
+// 动态规划构建isPalind数组
+int minCut(string s) {
+    int n = s.size();
+    vector<vector<bool>> isPalind(n, vector<bool> (n, false));
+
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i; j < n; ++j) {
+            if (s[i] == s[j]) {
+                if (j - i + 1 <= 2) isPalind[i][j] = true;
+                else isPalind[i][j] = isPalind[i + 1][j - 1];
+            }
+        }
+    }
+
+    vector<int> dp(n);
+    iota(dp.begin(), dp.end(), 0);
+    for (int i = 1; i < n; ++i) {
+        if (isPalind[0][i]) {
+            dp[i] = 0;
+            continue;
+        }
+
+        for (int j = 0; j < i; ++j) {
+            if (isPalind[j + 1][i]) {
+                dp[i] = min(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    return dp[n - 1];
+}

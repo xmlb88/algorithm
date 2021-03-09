@@ -133,3 +133,82 @@ void isPalindRome(string s) {
         }
     }
 }
+
+
+
+// review 2021年3月9日
+vector<vector<bool>> isPalind;
+vector<string> vec;
+vector<vector<string>> res;
+vector<vector<string>> partition(string s) {
+    // 创建isPalind数组
+    int n = s.size();
+    isPalind.resize(n, vector<bool> (n, false));
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i; j < n; ++j) {
+            if (s[i] == s[j]) {
+                if (j - i + 1 <= 2) isPalind[i][j] = true;
+                else isPalind[i][j] = isPalind[i + 1][j - 1];
+            }
+        }
+    }
+
+    // 回溯
+    backtrack(s, 0);
+    return res;
+}
+
+void backtrack(string& s, int index) {
+    if (index == s.size()) {
+        res.push_back(vec);
+        return;
+    }
+
+    for (int i = index; i < s.size(); ++i) {
+        if (isPalind[index][i]) {
+            vec.push_back(s.substr(index, i - index + 1));
+            backtrack(s, i + 1);
+            vec.pop_back();
+        }
+    }
+}
+
+// 中心扩展法创建isPalind数组
+vector<vector<bool>> isPalind;
+vector<string> vec;
+vector<vector<string>> res;
+
+vector<vector<string>> partition(string s) {
+    int n = s.size();
+    // 中心扩展法
+    isPalind.resize(n, vector<bool> (n, false));
+    for (int i = 0; i < n; i++) {
+        isPalindRome(s, i, i);
+        isPalindRome(s, i, i + 1);
+    }
+
+    backtrack(s, 0);
+    return res;
+}
+
+void isPalindRome(string& s, int left, int right) {
+    while (left >= 0 && right < s.size() && s[left] == s[right]) {
+        isPalind[left][right] = true;
+        --left; ++right;
+    }
+}
+
+void backtrack(string& s, int index) {
+    if (index == s.size()) {
+        res.push_back(vec);
+        return;
+    }
+
+    for (int i = index; i < s.size(); ++i) {
+        if (isPalind[index][i]) {
+            vec.push_back(s.substr(index, i - index + 1));
+            backtrack(s, i + 1);
+            vec.pop_back();
+        }
+    }
+}
