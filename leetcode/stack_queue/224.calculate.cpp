@@ -81,3 +81,10 @@ int calculate(string s) {
     }
     return ret;
 }
+
+// own thought
+int calculate(string s) {
+
+}
+
+// 9 + (3 - 1) * 3 + 10 / 2
