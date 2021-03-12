@@ -12,7 +12,7 @@ struct PersonInfo {
 };
 
 int main(int argc, char **argv) {
-    file_name = argv[1];
+    string file_name = argv[1];
     ifstream ifs(file_name);
     string line, word;  // 来自输入的一行和单词
     vector<PersonInfo> people;  // 保存来自输入的所有记录
@@ -28,6 +28,10 @@ int main(int argc, char **argv) {
     }
 
     // use ostringstream
+
+    ofstream os, oerr;
+    os.open("rPhone", ofstream::app);
+    oerr.open("bPhone", ofstream::app);
     
     for (const auto& entry : people) {  //对people中的每一项
         ostringstream formatted, badNums;   // 每个循环步创建的对象
@@ -39,6 +43,12 @@ int main(int argc, char **argv) {
             }
         }
 
-
+        if (badNums.str().empty()) { // 没有错误的数
+            os << entry.name << " " 
+               << formatted.str() << endl;
+        } else {
+            oerr << "input error: " << entry.name 
+                 << " invalid numbers(s) " << badNums.str() << endl;
+        }
     }
 }
