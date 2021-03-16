@@ -122,3 +122,48 @@ void merge(vector<pair<int, int>>& nums, int left, int mid, int right) {
 
     copy(sort_nums.begin(), sort_nums.end(), nums.begin() + left);
 }
+
+
+// review 2021Äê3ÔÂ16ÈÕ09:27:24
+
+vector<int> res;
+void mergeSort(vector<pair<int, int>>& nums, int left, int right, vector<pair<int, int>>& temp) {
+    if (left >= right) return;
+    int mid = left + (right - left) / 2;
+    mergeSort(nums, left, mid, temp);
+    mergeSort(nums, mid + 1, right, temp);
+    temp.clear();
+    int i = left, j = mid + 1;
+    while (i <= mid && j <= right) {
+        if (nums[i].first <= nums[j].first) {
+            res[nums[i].second] += j - (mid + 1);
+            temp.push_back(nums[i++]);
+            continue;
+        }
+
+        temp.push_back(nums[j++]);
+    }
+
+    while (i <= mid) {
+        res[nums[i].second] += j - (mid + 1);
+        temp.push_back(nums[i++]);
+    }
+
+    while (j <= right) {
+        temp.push_back(nums[j++]);
+    }
+
+    copy(temp.begin(), temp.end(), nums.begin() + left);
+}
+
+vector<int> countSmaller(vector<int>& arr) {
+    if (arr.empty()) return {};
+    vector<pair<int, int>> nums;
+    for (int i = 0; i < arr.size(); ++i) {
+        nums.emplace_back(arr[i], i);
+    }
+    vector<pair<int, int>> temp;
+    res.resize(arr.size(), 0);
+    mergeSort(nums, 0, nums.size() - 1, temp);
+    return res;
+}
