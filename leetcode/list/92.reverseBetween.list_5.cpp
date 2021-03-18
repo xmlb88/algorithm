@@ -126,3 +126,35 @@ ListNode* reverseList(ListNode* head) {
     head -> next = NULL;
     return last;
 }
+
+
+
+// review 2021Äê3ÔÂ18ÈÕ11:02:18
+ListNode* reverseBetween(ListNode* head, int m, int n) {
+    ListNode* prev = new ListNode(0);
+    prev -> next = head;
+    ListNode* curr = head;
+    ListNode* dummy = prev;
+
+    for (int i = 1; i < m; i++) {
+        prev = curr;
+        curr = curr -> next;
+    }
+
+    for (int i = m; i < n; i++) {
+        ListNode* node = curr -> next;
+        curr -> next = node -> next;
+        node -> next = prev -> next;
+        prev -> next = node;
+    }
+    return dummy -> next;
+    
+}
+
+// 1 -> 2 -> 3 -> 4 -> 5 m = 2, n = 4
+// dummy -> 1 -> 2 -> 3 -> 4 -> 5   prev = dummy, curr = 1
+// dummy -> 1 -> 2 -> 3 -> 4 -> 5   prev = 1, curr = 2
+// dummy -> 1 -> 2 -> 3 -> 4 -> 5   prev = 1, curr = 2
+// node = 3 curr -> next : 2 -> next = 4
+// node -> next : 3 -> next = 2 prev -> next = 1 -> next = 3
+// dummy -> 1 -> 3 -> 2 -> 4

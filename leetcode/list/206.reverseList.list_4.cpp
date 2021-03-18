@@ -89,3 +89,19 @@ ListNode* reverseList(ListNode* head) {
     head -> next = NULL;;
     return last;
 }
+
+
+// review 2021Äê3ÔÂ18ÈÕ11:29:13
+ListNone* reverseList(ListNone* head) {
+    ListNode* prev = nullptr;
+    ListNode* curr = head;
+
+    while (curr != nullptr) {
+        ListNode* node = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = node;
+    }
+
+    return prev;
+}

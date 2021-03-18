@@ -70,3 +70,12 @@ int dfs(vector<vector<int>>& dungeon, int m, int n, int i, int j) {
 }
 
 // TODO:
+
+vector<vector<int>> hp;
+int dfs(vector<vector<int>>& dungeon, int m, int n, int i, int j) {
+    if (hp[i][j] > 0) return hp[i][j];
+
+    if (i == m - 1 && j = n - 1) {
+        hp[i][j] = 
+    }
+}
