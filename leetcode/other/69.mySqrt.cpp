@@ -71,3 +71,29 @@ int mySqrt(int x) {
     }
     return int(res);
 }
+
+
+// review 2021Äê3ÔÂ19ÈÕ16:22:18
+int mySqrt(int x) {
+    if (x < 2) return x;
+    int left = 0, right = x / 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        long multiply = (long)mid * mid;
+        if (multiply == x) return mid;
+        else if (multiply > x) right = mid - 1;
+        else if (multiply < x) left = mid + 1;
+    }
+
+    return right;
+}
+
+int mySqrt(int x) {
+    if (x < 2) return x;
+
+    int res = x / 2;
+    while ((long)res * res > x) {
+        res = (res + x / res) / 2;
+    }
+    return res;
+}
