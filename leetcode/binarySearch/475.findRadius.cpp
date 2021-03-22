@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 
+// wa
 bool check(vector<int>& houses, vector<int>& heaters, int radius) {
     vector<pair<int, int>> range;
     for (const int& i : heaters) {
@@ -55,3 +56,21 @@ int findRadius(vector<int>& houses, vector<int>& radius) {
 
 // 二分优化
 // TODO:
+
+int findRadius(vector<int>& houses, vector<int>& heaters) {
+    int res = 0;
+    int n = heaters.size();
+    sort(heaters.begin(), heaters.end());
+    for (auto house : houses) {
+        int left = 0, right = n;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (house > heaters[mid]) left = mid + 1;
+            else right = mid;
+        }
+        int dist1 = (right == 0) ? INT_MAX : abs(house - heaters[right - 1]);
+        int dist2 = (right == n) ? INT_MAX : abs(house - heaters[right]);
+        res = max(res, min(dist1, dist2));
+    }
+    return res;
+}
