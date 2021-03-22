@@ -33,10 +33,10 @@ int lengthOfLongestSubstring(string s) {
     while (right < s.size()) {
         char c = s[right];
         right++;
-        // ½øÐÐ´°¿ÚÄÚÊý¾ÝµÄÒ»ÏµÁÐ¸üÐÂ
+        // ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½Ò»Ïµï¿½Ð¸ï¿½ï¿½ï¿½
         window[c]++;
 
-        // ÅÐ¶Ï×ó²à´°¿ÚÊÇ·ñÒªÊÕËõ
+        // ï¿½Ð¶ï¿½ï¿½ï¿½à´°ï¿½ï¿½ï¿½Ç·ï¿½Òªï¿½ï¿½ï¿½ï¿½
         while (window[c] > 1) {
             char d = s[left];
             left++;

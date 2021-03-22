@@ -24,4 +24,20 @@ int main() {
     if (list_result != lst.cend()) {
         cout << "lst find " << *list_result << endl;
     }
+
+
+    int ia[] = {27, 210, 12, 47, 109, 83};
+    int val2 = 83;
+    int* result2 = find(begin(ia), end(ia), val2);
+    cout << "find in ia: " << *result2 << endl;
+    auto result3 = find(ia + 1, ia + 4, val2);
+
+    // accumulate(vec.begin(), vec.end(), 0);
+    // string sum = accumulate(v.cbegin(), v.cend(), string(""));
+
+    // fill(vec.begin(), vec.end(), 0);
+    // fill(vec.begin(), vec.begin() + vec.size() / 2, 10);
+
+    // equal(roster1.cbegin(), roster1.cend(), roster2.cbegin());
+    // 340
 }
