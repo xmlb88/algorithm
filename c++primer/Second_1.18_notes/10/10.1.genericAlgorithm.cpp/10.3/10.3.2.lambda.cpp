@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <numeric>
+#include <functional>
 using namespace std;
 
 void biggies(vector<string>& words, vector<string>::size_type sz) {
@@ -101,3 +103,132 @@ void fcn2() {
 }
 
 // 351
+// 引用捕获用来输出数据，并接受一个字符作为分隔
+void biggies(vector<string>& words, vector<string>::size_type sz, ostream& os = cout, char c = ' ') {
+    // 与之前的例子一样重排words的代码
+    // 打印count的语句改为打印到os
+    for_each(words.begin(), words.end(), [&os, c] (const string& s){
+        os << s << c;
+    });
+}
+
+// 隐式捕获
+// 隐式值捕获
+wc = find_if(words.begin(), words.end(), [=] (const string& s) {
+    return s.size() >= sz;
+});
+
+// 如果一部分采用值捕获，其他变量采用引用捕获，可以混合使用隐式捕获和显示捕获
+void biggies(vector<string>& words, vector<string>::size_type sz, ostream& os = cout, char c = ' ') {
+    // 其他处理与之前一样
+    // os隐式捕获，引用捕获方式；c显示捕获，值捕获方式
+    for_each(words.begin(), words.end(), [&, c] (const string& s) {
+        os << s << c;
+    });
+
+    // os显示捕获，引用捕获方式；c隐式捕获，值捕获方式
+    for_each(words.begin(), words.end(), [=, &os] (const string& s) {
+        os << s << c;
+    });
+}
+
+// 混用隐式捕获和显示捕获时，捕获列表中第一个元素必须是一个&或=，此符号指定了默认捕获方式为引用或值
+// 混用时，显示捕获的变量必须使用与隐式捕获不同的方式
+
+
+// 可变lambda：
+void fcn3() {
+    size_t v1 = 42; // 局部变量
+    // f可以改变它所捕获的变量的值
+    auto f = [v1] () mutable {return ++v1;};
+    v1 = 0;
+    auto j = f();   // j 为43
+}
+
+// 一个引用捕获的变量是否可以修改依赖于此引用指向的是一个const类型还是一个非const类型
+void fcn4() {
+    size_t v1 = 42; // 局部变量
+    // v1是一个非const变量的引用
+    // 可以通过f2中的引用来改变它
+    auto f2 = [&v1] {return ++v1;};
+    v1 = 0;
+    auto j = f2(); // j为1
+}
+
+// 指定lambda返回类型
+// 例子：使用标准库transform算法和一个lambda将序列中的每个负数替换为其绝对值
+transform(vi.begin(), vi.end(), v1.begin(), [] (int i) {
+    return i < 0 ? -i : i;
+});
+
+// 错误：不能推断lambda的返回类型
+transform(vi.begin(), vi.end(), vi.begin(), [] (int i) {
+    if (i < 0) return -i;
+    else return i;
+});
+// 编译器推断这个版本的lambda返回类型为void，但它返回了一个int值
+// 当需要为一个lambda定义返回类型时，必须使用尾置返回类型
+transform(vi.begin(), vi.end(), vi.begin(), [] (int i) -> int {
+    if (i < 0) return -i;
+    else return i;
+});
+
+
+// 10.3.4 参数绑定
+
+// 对于捕获局部变量的lambda，用函数来替换它不是那么容易
+// find_if调用lambda来比较一个string和一个给定大小，编写函数：
+bool check_size(const string& s, string::size_type sz) {
+    return s.size() >= sz;
+}
+// 但是，我们不能用这个函数作为find_if的一个参数，find_if接受一个一元谓词，
+// 传递给find_if的可调用对象必须接受单一参数
+// 参数个数：一元谓词，二元谓词  
+
+
+// 解决向check_size传递一个长度参数的问题
+// bind 头文件#include <functional>
+auto newCallable = bind(callable, arg_list);
+
+auto check6 = bind(check_size, _1, 6);
+
+auto wc = fidn_if(words.begin(), words.end(), [sz] (const string& a));
+// 可替换为如下版本
+
+auto wc = find_if(words.begin(), words.end(), bind(check_size, _1, sz));
+
+// placeholders
+using std::placeholders::_1;
+using namespace std::placeholders;
+
+// g是一个有2个参数的可调用对象
+auto g = bind(f, a, b, _2, c, _1);
+
+// 用bind重排参数排序
+// 按单词长度由短至长排序
+sort(words.begin(), words.end(), isShorter);
+// 按单词长度由长至短排序
+sort(words.begin(), words.end(), bind(isShorter, _2, _1));
+
+// 绑定引用参数
+// 例如：替换一个引用方式捕获ostream的lambda：
+// os是一个局部变量，引用一个输出流
+// c是一个局部变量，类型为char
+for_each(words.begin(), words.end(), [&os, c] (const string& s) {
+    os << s << c;
+});
+
+// 编写函数，完成相同的工作
+ostream& print(ostream& os, const string& s, char c) {
+    return os << s << c;
+}
+
+// 但是，不能直接用bind代替对os的捕获
+// 错误：不能拷贝os
+for_each(words.begin(), words.end(), bind(print, os, _1, ' '));
+
+// 使用ref
+for_each(words.begin(), words.end(), bind(print, ref(os), _1, ' '));
+// ref返回一个对象，包含给定的引用，cref保存const 引用的类
+
+
