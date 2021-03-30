@@ -62,3 +62,57 @@ bool searchMatrix(vector<vector<int>>& matrix, int target) {
     }
     return false;
 }
+
+
+// 二分
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int m = matrix.size(), n = matrix[0].size();
+    int left = 0, right = m * n - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        int x = mid / n, y = mid % n;
+        if (matrix[x][y] == target) return true;
+        else if (matrix[x][y] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return false;
+}
+
+// 从右上角搜索
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int n = matrix.size(), m = matrix[0].size();
+    int x = 0, y = m - 1;
+    while (x < n && y >= 0) {
+        if (matrix[x][y] == target) return true;
+        else if (matrix[x][y] > target) --y;
+        else if (matrix[x][y] < target) ++x;
+    }
+    return false;
+}
+
+// 从左下角搜索
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int n = matrix.size(), m = matrix[0].size();
+    int x = n - 1, y = 0;
+    while (x >= 0 && y < m) {
+        if (matrix[x][y] == target) return true;
+        else if (matrix[x][y] > target) --x;
+        else if (matrix[x][y] < target) ++y;
+    }
+    return false;
+}
+
+// 2次二分查找
+// https://leetcode-cn.com/problems/search-a-2d-matrix/solution/sou-suo-er-wei-ju-zhen-by-leetcode-solut-vxui/
+// 
+
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    auto row = upper_bound(matrix.begin(), matrix.end(), target, [] (const int b, const vector<int>& a) {
+        return b < a[0];
+    });
+
+    if (row == matrix.begin()) return false;
+
+    --row;
+    return binary_search(row -> begin(), row -> end(), target);
+}

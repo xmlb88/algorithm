@@ -152,3 +152,59 @@ int lengthOfLIS(vector<int>& nums) {
 
     return minnum.size();
 }
+
+// 二分
+// review 2021年3月30日17:30:01
+int lengthOfLIS(vector<int>& nums) {
+    int len = nums.size();
+    if (len < 2) return len;
+
+    vector<int> tail;
+    tail.push_back(nums[0]);
+    int end = 0;
+
+    for (int i = 1; i < len; ++i) {
+        if (nums[i] > tail[end]) {
+            tail.push_back(nums[i]);
+            end++;
+        } else {
+            int left = 0, right = end;
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tail[mid] < nums[i]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            tail[left] = nums[i];
+        }
+    }
+
+    return tail.size();
+}
+
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    if (n < 2) return n;
+
+    vector<int> tail;
+    tail.push_back(nums[0]);
+    for (int i = 1; i < n; ++i) {
+        if (nums[i] > tail.back()) {
+            tail.push_back(nums[i]);
+        } else {
+            int left = 0, right = tail.size();
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tail[mid] < nums[i]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            tail[left] = nums[i];
+        }
+    }
+    return tail.size();
+}
