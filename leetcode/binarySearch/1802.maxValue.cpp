@@ -2,6 +2,6 @@
 #include <vector>
 using namespace std;
 
-int minDays(vector<int>& bloomDay, int m, int k) {
+int maxValue(int n, int index, int maxSum) {
     
 }
