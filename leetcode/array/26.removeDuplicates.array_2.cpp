@@ -33,3 +33,30 @@ int removeDuplicates(vector<int>& nums) {
     }
     return slow + 1;
 }
+
+// review 2021Äê4ÔÂ6ÈÕ19:46:47
+int removeDuplicates(vector<int>& nums) {
+    if (nums.empty()) return 0;
+    int fast = 0, slow = 0;
+    while (fast < nums.size()) {
+        if (nums[slow] == nums[fast]) {
+            fast++;
+        } else {
+            nums[++slow] = nums[fast++];
+        }
+    }
+    return slow + 1;
+}
+//nums = [0,0,1,1,1,2,2,3,3,4]
+
+int removeDuplicates(vector<int>& nums) {
+    if (nums.empty()) return 0;
+    int fast = 0, slow = 0;
+    while (fast < nums.size()) {
+        if (nums[fast] != nums[slow]) {
+            nums[++slow] = nums[fast];
+        }
+        ++fast;
+    }
+    return slow + 1;
+}
