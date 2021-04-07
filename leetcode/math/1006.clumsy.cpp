@@ -69,6 +69,25 @@ int clumsy(int N) {
 7 7 * 6 / 5 + 4 - 3 * 2 / 1 = 6
 8 8 * 7 / 6 + 5 - 4 * 3 / 2 + 1 = 9
  */
+
+int clumsy(int N) {
+    switch (N) {
+        case 1:
+            return 1;
+        case 2:
+            return 2;
+        case 3:
+            return 6;
+        case 4:
+            return 7;
+        default:
+            if (N % 4 == 0) return N + 1;
+            if (N % 4 <= 2) return N + 2;
+            return N - 1;
+    }
+    return -1;
+}
+
 int clumsy(int N) {
     if (N == 1) return 1;
     else if (N == 2) return 2;
@@ -78,4 +97,30 @@ int clumsy(int N) {
     if (N % 4 == 0) return N + 1;
     else if (N % 4 <= 2) return N + 2;
     else return N - 1;
+}
+
+int clumsy(int N) {
+    stack<int> st;
+    st.push(N--);
+    int index = 0;
+    while (N > 0) {
+        if (index % 4 == 0) {
+            st.top() *= N;
+        } else if (index % 4 == 1) {
+            st.top() /= N;
+        } else if (index % 4 == 2) {
+            st.push(N);
+        } else {
+            st.push(-N);
+        }
+        ++index;
+        --N;
+    }
+
+    int res = 0;
+    while (!st.empty()) {
+        res += st.top();
+        st.pop();
+    }
+    return res;
 }

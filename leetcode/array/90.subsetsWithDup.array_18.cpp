@@ -109,3 +109,27 @@ vector<vector<int>> subsetsWithDup(vector<int>& nums) {
     backtrack(nums, 0);
     return res;
 }
+
+// 子集II
+// review 2021年4月7日09:31:29
+// DFS 重点如何去重
+
+vector<int> vec;
+vector<vector<int>> res;
+
+void backtrack(vector<int>& nums, int index) {
+    res.push_back(vec);
+
+    for (int i = index; i < nums.size(); ++i) {
+        if (i > index && nums[i] == nums[i - 1]) continue;
+        vec.push_back(nums[i]);
+        backtrack(nums, i + 1);
+        vec.pop_back();
+    }
+}
+
+vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    backtrack(nums, 0);
+    return res;
+}
