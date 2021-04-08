@@ -23,7 +23,7 @@ int numRabbits(vector<int>& answers) {
 // https://leetcode-cn.com/problems/rabbits-in-forest/solution/sen-lin-zhong-de-tu-zi-by-leetcode-solut-kvla/
 // 
 
-int numRabbit(vector<int>& answers) {
+int numRabbits(vector<int>& answers) {
     unordered_map<int, int> count;
     for (int y : answers) {
         ++count[y];
@@ -31,6 +31,7 @@ int numRabbit(vector<int>& answers) {
 
     int ans = 0;
     for (auto& [y, x] : count) {
-        ans += 
+        ans += (x + y) / (y + 1) * (y + 1);
     }
+    return ans;
 }
