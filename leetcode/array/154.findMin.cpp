@@ -37,6 +37,8 @@ int findMin(vector<int>& nums) {
     return nums[left];
 }
 
+// nums[mid] Óë nums[left]
+//
 int findMin(vector<int>& nums) {
     int left = 0, right = nums.size() - 1;
     while (left < right) {
