@@ -4,6 +4,7 @@
 #include <iterator>
 #include <algorithm>
 #include <numeric>
+#include <list>
 using namespace std;
 
 /* 
@@ -39,3 +40,7 @@ copy(lst.cbegin(), lst.cend(), inserter(lst3, lst3.begin()));
 //363
 // 359
 // 365
+
+// 370 listºÍforward_list splice
+list<int> lst1;
+list<int> lst2;
