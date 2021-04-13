@@ -40,3 +40,27 @@ vector<int> inorderTraversal(TreeNode* root) {
     }
     return result;
 }
+
+// review 2021年4月13日18:12:05
+vector<int> res;
+vector<int> inorderTraversal(TreeNode* root) {
+    if (!root) return res;
+    inorderTraversal(root -> left);
+    res.push_back(root -> val);
+    inorderTraversal(root -> right);
+    return res;
+}
+
+// 迭代
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> stk;
+    while (root != nullptr || !stk.empty()) {
+        while (root != nullptr) {
+            stk.push(root);
+            root = root -> left;
+        }
+
+        
+    }
+}
