@@ -49,7 +49,7 @@ void count_word_filter() {
 
 
 //³õÊ¼»¯
-map<string, size_t> word_count; // ¿ÕÈÝÆ÷
+// map<string, size_t> word_count; // ¿ÕÈÝÆ÷
 set<string> exclude;
 map<string, string> authors = {
     {"Joyce", "James"},
@@ -72,9 +72,9 @@ void _test() {
     cout << miset.size() << endl;
 }
 
-int main() {
-    _test();
-}
+// int main() {
+//     _test();
+// }
 
 // strict weak ordering
 
@@ -98,3 +98,7 @@ pair<string, vector<int>> line;
 // ³õÊ¼»¯Æ÷
 pair<string, string> author{"James", "Joyce"};
 // 380
+
+int main() {
+    cout << author.first << " " << author.second << endl;
+}
