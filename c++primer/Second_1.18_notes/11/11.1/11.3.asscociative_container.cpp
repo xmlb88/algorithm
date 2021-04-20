@@ -174,6 +174,55 @@ void at_map() {
 // c.at[k]：访问关键字为k的元素，带参数检查，若k不在c中，抛出一个out_of_range异常
 // 387
 
+// 11.3.5访问元素
+
+/* 
+// lower_bound 和 upper_bound不适用于无序容器
+// 下标和at只适用于非const的map和unordered_map
+c.find(k) // 返回迭代器指向关键字为k的元素，若k不在容器中，返回尾后迭代器
+c.count(k)
+c.lower_bound(k)
+c.upper_bound(k)
+c.equal_range(k) 返回迭代器pair , pair<map<string, int>::iterator, map<string, int>::iterator> 表示等于k的范围
+若k不存在，pair的2个成员为c.end()
+ */
 
 
+void user_find_not_at() {
+    map<string, size_t> word_count;
+    if (word_count.find("foobar") == word_count.end()) {
+        cout << "foobar is not in the map" << endl;
+    }
+}
+
+
+// 在multimap或multiset中查找元素
+void serach1(multimap<string, string>& authors) {
+    string search_item("Alain de Botton");
+    auto entries = authors.count(search_item); // 数量
+    auto iter = authors.find(search_item);  // 第一本书
+    // 用一个循环查找
+    while (entries) {
+        cout << iter -> second << endl;
+        ++iter; // 前进到下一本书
+        --entries;
+    }
+}
+
+// 面向迭代器的解决方法
+void search2(multimap<string, string>& authors, string search_item) {
+    for (auto beg = authors.lower_bound(search_item), end = authors.upper_bound(search_item); beg != end; ++beg) {
+        cout << beg -> second << endl;
+    }
+}
+
+// 适用equeal_range
+void search3(multimap<string, string>& authors, string search_item) {
+    for (auto pos = authors.equal_range(search_item); pos.first != pos.second; ++pos.first) {
+        cout << pos.first -> second << endl;
+    }
+}
+
+// 11.28:map<string, vector<int>>::iterator
+// 不改变顺序的iterator，make_pair(c.end(). c.end())
 
