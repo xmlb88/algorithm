@@ -38,3 +38,7 @@ void word_transform(ifstream& map_file, ifstream& input) {
         cout << endl;
     }
 }
+
+
+// 396 not understand
+// TODO:    
