@@ -16,6 +16,8 @@ public:
     // ÔªËØ·ÃÎÊ
     std::string& front();
     std::string& back();
+    const std::string& front() const;
+    const std::string& back() const;
 private:
     std::shared_ptr<std::vector<std::string>> data;
     void check(size_type i, const std::string& msg) const;
@@ -36,7 +38,7 @@ string& StrBlob::front() {
 }
 
 // const ÖØÔØ
-const string& StrBlob::front() {
+const string& StrBlob::front() const {
     check(0, "front on empty StrBlob");
     return data -> front();
 }
@@ -46,8 +48,15 @@ string& StrBlob::back() {
     return data -> back();
 }
 
+// const back
+const string& StrBlob::back() const {
+    check(0, "back on empty StrBlob");
+    return data -> back();
+}
+
 void StrBlob::pop_back() {
     check(0, "pop_back on empty StrBlob");
     data -> pop_back();
 }
 // 406
+// sleep read

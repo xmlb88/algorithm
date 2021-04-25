@@ -74,3 +74,36 @@ vector<int> largestDivisibleSubset(vector<int>& nums) {
     }
     return res;
 }
+
+
+// review 2021Äê4ÔÂ23ÈÕ18:08:28
+// WA
+vector<int> largestDivisibleSubset(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    vector<int> dp(n, 1);
+    for (int i = 1; i < n; ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (nums[i] % nums[j] == 0)
+                dp[i] = max(dp[i], dp[j] + 1);
+        }
+    }
+
+    int max_number = INT_MIN, size = 0;
+    for (int i = 0; i < n; ++i) {
+        if (dp[i] > size) {
+            size = dp[i];
+            max_number = nums[i];
+        }
+    }
+
+    vector<int> res;
+    for (int i = n - 1; i >= 0 && size > 0; --i) {
+        if (max_number % nums[i] == 0 && dp[i] == size) {
+            res.push_back(nums[i]);
+            max_number = nums[i];
+            --size;
+        }
+    }
+    return res;
+}
