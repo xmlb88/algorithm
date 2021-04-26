@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <numeric>
 using namespace std;
 
 int shipWithinDays(vector<int>& weights, int D) {
@@ -34,4 +35,30 @@ int needDays(vector<int>& weights, int w) {
     }
     day++;
     return day;
+}
+
+int check(vector<int>& weights, int k) {
+    int day = 1, sum = 0;
+    for (auot w : weights) {
+        if (sum + w > k) {
+            ++day;
+            sum = w;
+        } else sum += w;
+    }
+    return day;
+}
+
+int shipWithinDays(vector<int>& weights, int D) {
+    int left = *max_element(weights.begin(), weights.end());
+    int right = accumulate(weights.begin(), weights.end(), 0);
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (check(weights, mid) <= D) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
