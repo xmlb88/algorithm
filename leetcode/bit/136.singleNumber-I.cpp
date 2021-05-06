@@ -9,3 +9,11 @@ int singleNumber(vector<int>& nums) {
     }
     return num;
 }
+
+int singleNumber(vector<int>& nums) {
+    int res = 0;
+    for (int num : nums) {
+        res ^= num;
+    }
+    return res;
+}
