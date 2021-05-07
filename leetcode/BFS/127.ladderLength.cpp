@@ -132,3 +132,10 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
     }
     return 0;
 }
+
+
+// review 2021Äê5ÔÂ7ÈÕ14:48:20
+// BFS
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+    // TODO:
+}

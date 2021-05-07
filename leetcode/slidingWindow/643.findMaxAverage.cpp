@@ -70,4 +70,22 @@ double findMaxAverage(vector<int>& nums, int k) {
     }
 
     return static_cast<double>(max_sum) / k;
-} 
+}
+
+// review 2021Äê5ÔÂ7ÈÕ14:59:36
+// sliding window
+double findMaxAverage(vector<int>& nums, int k) {
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < k; i++) {
+        sum += nums[i];
+    }
+
+    int max_sum = sum;
+    for (int i = k; i < n; ++i) {
+        sum += nums[i] - nums[i - k];
+        max_sum = max(max_sum, sum);
+    }
+
+    return static_cast<double>(max_sum) / k;
+}
