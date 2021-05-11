@@ -2,6 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <map>
+#include <unordered_map>
+#include <functional>
 using namespace std;
 
 // example
@@ -102,3 +105,68 @@ sort(nameTable.begin(), nameTable.end(), less<string*>());
 // c++有几种可调用的对象：
 // 函数、函数指针、lambda表达式、bind创建的对象以及重载了函数调用运算符的类
 // 511
+
+// 不同类型可能具有相同的调用形式
+// 普通函数
+int add(int i, int j) { return i + j; }
+// lambda 产生一个未命名的函数对象类
+auto mod = [] (int i, int j) { return i % j; };
+// 函数对象类
+struct divide {
+    int operator() (int denominator, int divisor) {
+        return denominator / divisor;
+    }
+};
+
+// 同一种形式：
+int (int, int)
+
+// 函数表(function table)
+// 构建从运算符到函数指针的映射关系，其中函数接受2个int，返回一个int
+map<string, int(*)(int, int)> binops;
+
+// 正确：add是一个指向正确函数类型的指针
+binops.insert({"+", add});
+// 但我们不能将mod或者divide存入binops
+binops.insert({"%", mod});  // 错误：mod不是一个函数指针
+
+// 标准库function类型
+
+function<int(int, int)> f1 = add;   // 函数指针
+function<int(int, int)> f2 = divide();  // 函数对象类的对象
+function<int(int, int)> f3 = [] (int i, int j) { return i * j; }; // lambda
+cout << f1(4, 2) << endl;
+cout << f2(4, 2) << endl;
+cout << f3(4, 2) << endl;
+
+// 重新定义map
+map<string, function<int(int, int)>> binops;
+map<string, function<int(int, int)>> binops = {
+    {"+", add},     // 函数指针
+    {"-", std::minus<int>()},   // 标准库函数对象
+    {"/", divide()},    // 用户定义的函数对象
+    {"*", [] (int i, int j) { return i * j; }},     //未命名的lambda
+    {"%", mod}  // 命名了的lambda
+};
+
+binops["+"](10, 5); // 调用add(10, 5)
+binops["-"](10, 5); // 使用minus<int>对象的调用运算符
+binops["/"](10, 5); // 使用divide对象的调用运算符
+binops["*"](10, 5); // 调用lambda函数对象
+binops["%"](10, 5); // 调用lambda函数对象
+
+
+// 不能（直接）将重载函数的名字存入function类型的对象中
+int add(int i, int j) { return i + j; }
+Sales_data add(const Sales_data&, const Sales_data&);
+map<string, function<int(int, int)>> binops;
+binops.insert({"+", add});  // 错误：哪个add？
+
+// 解决二义性问题一条途径是存储函数指针，而非函数的名字
+int (*fp)(int, int) = add;  // 指针所指的add是接受2个int的版本
+binops.insert({"+", fp});   // 正确：fp指向一个正确的add版本
+
+// 同样，也能使用lambda来消除二义性
+// 正确：使用lambda来指定我们希望使用的add版本
+binops.insert("+", [] (int a, int b) { return add(a, b); });
+
