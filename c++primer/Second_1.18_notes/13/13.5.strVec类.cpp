@@ -87,3 +87,15 @@ StrVec::StrVec(StrVec &&s) noexcept :
     // 令s进入这样的状态-对其运行析构函数是安全的
     s.elements = s.first_free = s.cap = nullptr;
 }
+
+StrVec &StrVec::operator=(StrVec &&rhs) noexcept {
+    if (this != &rhs) {
+        free();
+        elements = rhs.elements;
+        first_free = rhs.first_free;
+        cap = rhs.cap;
+        rhs.elements = rhs.first_free = rhs.cap = nullptr;
+    }
+    return *this;
+}
+

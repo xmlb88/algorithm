@@ -18,3 +18,35 @@ int &&rr3 = std::move(rr1); // ok
 // 使用move直接用std::move
 
 // 474
+
+struct X {
+    int i;  // 内置类型可以移动
+    std::string s;  // string定义了自己的移动操作
+};
+
+struct hasX {
+    X mem;  // x有合成的移动操作
+};
+
+X x, x2 = std::move(x); // 使用合成的移动构造函数
+hasX hx, hx2 = std::move(hx);
+
+
+class Foo {
+public:
+    Foo() = default;
+    Foo(const Foo&);
+};
+
+Foo x;
+Foo y(x);
+Foo z(std::move(x));
+
+class HasPtr {
+public:
+    HasPtr(HasPtr &&p) noexcept : ps(p.ps), i(p.i) {p.ps = 0;}
+    HasPtr& operator=(HasPtr rhs) {
+        swap(*this, rhs);
+        return *this;
+    }
+};

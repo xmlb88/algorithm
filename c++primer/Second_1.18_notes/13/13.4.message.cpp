@@ -81,3 +81,38 @@ void swap(Message &lhs, Message &rhs) {
     for (auto f : rhs.folders)
         f->addMsg(&rhs);
 }
+
+void Message::move_Folders(Message *m) {
+    folders = std::move(m->folders);    // 使用set的移动复制运算符
+    for (auto f : folders) {
+        f->remMsg(m);
+        f->addMsg(this);
+    }
+    m->folders.clear();
+}
+
+Message::Message(Message &&m) : contents(std::move(m.contents)) {
+    move_Folders(&m);
+}
+
+Message& Message::operator=(Message &&rhs) {
+    if (this != rhs) {
+        remove_from_Folders();
+        contents = std::move(rhs.contents);
+        move_Folders(&rhs);
+    }
+    return *this;
+}
+
+// 移动迭代器 move iterator
+void StrVec::reallocate() {
+    // 分配大小2倍于当前规模的内存空间
+    auto newcapacity = size() ? 2 * size() : 1;
+    auto first = alloc.allocate(newcapacity);
+    // 移动元素
+    auto last = uninitialized_copy(make_move_iterator(begin()), make_move_iterator(end()), first);
+    free();
+    elements = first;
+    first_free = last;
+    cap = elements + newcapacity;
+}
