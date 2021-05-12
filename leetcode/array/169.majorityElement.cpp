@@ -79,3 +79,42 @@ int majorityElement(vector<int>& nums) {
     }
     return candidate;
 }
+
+// review 2021年5月12日10:52:42
+// interview 17.10 不一定存在，需验证
+int majorityElement(vector<int>& nums) {
+    unordered_map<int, int> m;
+    for (auto num : nums) {
+        m[num]++;
+    }
+
+    for (auto& [num, count] : m) {
+        if (count > nums.size() / 2) return num;
+    }
+    return -1;
+}
+
+// 排序
+// int majorityElement(vector<int>& nums) {
+//     sort(nums.begin(), nums.end());
+//     return nums[nums.size() / 2];
+// }
+
+// Moore
+int majorityElement(vector<int>& nums) {
+    int count = 0, candidate;
+    for (int num : nums) {
+        if (count == 0) {
+            candidate = num;
+        }
+        if (num == candidate) ++count;
+        else --count;
+    }
+
+    count = 0;
+    for (int num : nums) {
+        if (num == candidate) ++count;
+    }
+    if (count > nums.size() / 2) return candidate;
+    return -1;
+}

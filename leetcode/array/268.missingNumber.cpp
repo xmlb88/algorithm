@@ -40,3 +40,34 @@ int missingNumber(vector<int>& nums) {
 
     return res;
 }
+
+// review 2021年5月12日11:24:37
+// interview 17.04
+
+// 计算和
+int missingNumber(vector<int>& nums) {
+    int num = 0;
+    for (int i = 0; i < nums.size(); ++i) {
+        num += i - nums[i];
+    }
+    num += nums.size();
+    return num;
+}
+
+// 排序后遍历
+int missingNumber(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i < nums.size(); ++i) {
+        if (nums[i] != i) return i;
+    }
+    return nums.size();
+}
+
+// 异或
+int missingNumber(vector<int>& nums) {
+    int num = 0;
+    for (int i = 0; i < nums.size(); ++i) {
+        num ^= i ^ nums[i];
+    }
+    return num ^ nums.size();
+}
