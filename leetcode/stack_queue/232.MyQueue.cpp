@@ -95,3 +95,42 @@ public:
         return stackIn.empty() && stackOut.empty();
     }
 };
+
+// review 2021Äê5ÔÂ14ÈÕ09:36:50
+class MyQueue {
+public:
+    stack<int> st_in, st_out;
+    MyQueue() {
+
+    }
+
+    void push(int x) {
+        st_in.push(x);
+    }
+
+    void from_in_to_out() {
+        if (st_out.empty()) {
+            while (!st_in.empty()) {
+                st_out.push(st_in.top());
+                st_in.pop();
+            }
+        }
+    }
+
+    int pop() {
+        from_in_to_out();
+        int res = st_out.top();
+        st_out.pop();
+        return res;
+    }
+
+    int peek() {
+        from_in_to_out();
+        return st_out.top();
+    }
+
+    bool empty() {
+        return st_in.empty() && st_out.empty();
+    }
+
+};
