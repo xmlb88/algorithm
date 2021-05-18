@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <unordered_set>
+#include <algorithm>
 using namespace std;
 
 // BFS self 超时
@@ -134,8 +135,82 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
 }
 
 
-// review 2021年5月7日14:48:20
+// review 2021年5月18日15:15:16
 // BFS
-int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-    // TODO:
+bool canTransfer(string s1, string s2) {
+    if (s1.size() != s2.size()) return false;
+    int count = 0;
+    for (int i = 0; i < s1.size(); ++i) {
+        if (s1[i] != s2[i]) ++count;
+        if (count > 1) return false;
+    }
+    return count == 1;
 }
+
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+    if (find(wordList.begin(), wordList.end(), endWord) == wordList.end()) return 0;
+    int n = wordList.size();
+    vector<int> visited(n, 0);
+    queue<string> q;
+    q.push(beginWord);
+    int res = 1;
+    while (!q.empty()) {
+        int size = q.size();
+        for (int i = 0; i < size; ++i) {
+            string word = q.front();
+            q.pop();
+            if (word == endWord) return res;
+
+            for (int j = 0; j < n; ++j) {
+                if (visited[j]) continue;
+
+                if (canTransfer(word, wordList[j])) {
+                    q.push(wordList[j]);
+                    visited[j] = 1;
+                }
+            }
+        }
+        ++res;
+    }
+    return 0;
+}
+
+
+// 优化？
+bool canTransfer(string s1, string s2) {
+    if (s1.size() != s2.size()) return fasle;
+    int count = 0;
+    for (int i = 0; i < s1.size(); ++i) {
+        if (s1[i] != s2[i]) ++count;
+        if (count > 1) return false;
+    }
+    return count == 1;
+}
+
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+    if (find(wordList.begin(), wordList.end(), endWord) == wordList.end()) return 0;
+    unordered_set<string> used;
+    queue<string> q;
+    q.push(beginWord);
+    used.insert(beginWord);
+    int res = 0;
+    while (!q.empty()) {
+        ++res;
+        int size = q.size();
+        for (int i = 0; i < size; ++i) {
+            string word = q.front();
+            q.pop();
+            if (word == endWord) return res;
+            for (const string& s : wordList) {
+                if (used.find(s) != used.end()) continue;
+                if (canTransfer(word, s)) {
+                    q.push(s);
+                    used.insert(s);
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+// TODO:
