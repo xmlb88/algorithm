@@ -26,3 +26,27 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
 
     return node1;
 }
+
+// review 2021年5月19日10:23:51
+ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+    ListNode *A = headA, *B = headB;
+    while (A != B) {
+        if (!A) A = headB;
+        else A = A -> next;
+        if (!B) B = headA;
+        else B = B -> next;
+    }
+    return A;
+}
+
+ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+    ListNode *cur_A = headA, *cur_B = headB;
+    while (cur_A != cur_B) {
+        cur_A = cur_A ? cur_A -> next : headB;
+        cur_B = cur_B ? cur_B -> next : headA;
+    }
+    return cur_A;
+}
+
+// 时间O(n)
+// 空间O(1)
