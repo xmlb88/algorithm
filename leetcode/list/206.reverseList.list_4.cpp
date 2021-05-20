@@ -92,7 +92,7 @@ ListNode* reverseList(ListNode* head) {
 
 
 // review 2021年3月18日11:29:13
-ListNone* reverseList(ListNone* head) {
+ListNode* reverseList(ListNone* head) {
     ListNode* prev = nullptr;
     ListNode* curr = head;
 
@@ -104,4 +104,36 @@ ListNone* reverseList(ListNone* head) {
     }
 
     return prev;
+}
+
+
+// review 2021年5月20日10:01:40
+// 迭代
+ListNode* reverseList(ListNode* head) {
+    ListNode *pre = nullptr, *cur = head;
+    while (cur) {
+        ListNode* node = cur -> next;
+        cur -> next = pre;
+        pre = cur;
+        cur = node;
+    }
+    return pre;
+}
+
+// 递归
+ListNode* reverseList(ListNode* head) {
+    if (!head || !head -> next) return head;
+    ListNode* nxt = head -> next;
+    ListNode* node = reverseList(head -> next);
+    nxt -> next = head;
+    head -> next = nullptr;
+    return node;
+}
+
+ListNode* reverseList(ListNode* head) {
+    if (!head || !head -> next) return head;
+    ListNode* node = reverseList(head -> next);
+    head -> next -> next = head;
+    head -> next = nullptr;
+    return node;
 }

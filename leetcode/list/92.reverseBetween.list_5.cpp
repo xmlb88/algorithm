@@ -158,3 +158,91 @@ ListNode* reverseBetween(ListNode* head, int m, int n) {
 // node = 3 curr -> next : 2 -> next = 4
 // node -> next : 3 -> next = 2 prev -> next = 1 -> next = 3
 // dummy -> 1 -> 3 -> 2 -> 4
+
+
+
+// review 2021年5月20日10:14:05
+// 普通解法，切断，反转，再连接
+
+ListNode* reverseList(ListNode* head) {
+    ListNode *pre = nullptr, *cur = head;
+    while (cur) {
+        ListNode* node = cur -> next;
+        cur -> next = pre;
+        pre = cur;
+        cur = node;
+    }
+    return pre;
+}
+
+// 1 2 3 4 5
+ListNode* reverseBetween(ListNode* head, int left, int right) {
+    ListNode* dummy = new ListNode(0);
+    dummy -> next = head;
+
+    ListNode* pre = dummy;
+    for (int i = 0; i < left - 1; ++i) {
+        pre = pre -> next;
+    }
+
+    ListNode* start = pre -> next, *end = start;
+    for (int i = 0; i < right - left; ++i) {
+        end = end -> next;
+    }
+
+    ListNode* after = end -> next;
+
+    // 切断
+    pre -> next = nullptr;
+    end -> next = nullptr;
+
+    reverseList(start);
+    pre -> next = end;
+    start -> next = after;
+
+    return dummy -> next;
+}
+
+// 迭代，穿针引线，一次遍历
+// 0 1 2 3 4 5
+ListNode* reverseBetween(ListNode* head, int left, int right) {
+    ListNode* dummy = new ListNode(0);
+    dummy -> next = head;
+    ListNode* pre = dummy;
+
+    for (int i = 0; i < left - 1; ++i) {
+        pre = pre -> next;
+    }
+
+    ListNode* cur = pre -> next;
+    ListNode* nxt;
+    for (int i = 0; i < right - left; ++i) {
+        nxt = cur -> next;
+        cur -> next = nxt -> next;
+        nxt -> next = pre -> next;
+        pre -> next = nxt;
+    }
+
+    return dummy -> next;
+}
+
+// ag
+ListNode* reverseBetween(ListNode* head, int left, int right) {
+    ListNode* dummy = new ListNode(0);
+    dummy -> next = head;
+    ListNode* pre = dummy;
+
+    for (int i = 0; i < left - 1; ++i) {
+        pre = pre -> next;
+    }
+
+    ListNode* cur = pre -> next;
+    ListNode* nxt;
+    for (int i = 0; i < right - left; ++i) {
+        nxt = cur -> next;
+        cur -> next = nxt -> next;
+        nxt -> next = pre -> next;
+        pre -> next = nxt;
+    }
+    return dummy -> next;
+}

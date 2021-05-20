@@ -17,3 +17,16 @@ bool hasCycle(ListNode* head) {
     }
     return false;
 }
+
+// review 2021Äê5ÔÂ20ÈÕ09:26:25
+bool hasCycle(ListNode* head) {
+    if (!head) return false;
+    ListNode *fast = head, *slow = head;
+    while (fast && fast -> next) {
+        slow = slow -> next;
+        fast = fast -> next -> next;
+        if (fast == slow) return true;
+    }
+
+    return false;
+}
