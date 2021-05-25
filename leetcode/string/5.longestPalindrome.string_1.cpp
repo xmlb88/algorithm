@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<vector>
 using namespace std;
 
 string longestPalindrome(string s) {
@@ -183,4 +184,105 @@ int palindrome(string& s, int center) {
         step++;
     }
     return step;
+}
+
+
+// review 
+// 2021年5月25日11:30:13
+
+// dp
+string longestPalindrome(string s) {
+    int n = s.size();
+    vector<vector<bool>> dp(n, vector<bool> (n, true));
+
+    int begin = 0, maxlen = 1;
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i + 1; j < n; ++j) {
+            if (s[i] != s[j]) {
+                dp[i][j] = false;
+                continue;
+            }
+
+            dp[i][j] = dp[i + 1][j - 1];
+            if (dp[i][j] && j - i + 1 > maxlen) {
+                begin = i;
+                maxlen = j - i + 1;
+            }
+        }
+    }
+    return s.substr(begin, maxlen);
+}
+
+// 中心扩展法
+string longestPalindrome(string s) {
+    string res;
+    for (int i = 0; i < s.size(); ++i) {
+        string s1 = palindrome(s, i, i);
+        if (s1.size() > res.size()) res = s1;
+        string s2 = palindrome(s, i, i + 1);
+        if (s2.size() > res.size()) res = s2;
+    }
+    return res;
+}
+
+string palindrome(string s, int left, int right) {
+    while (left >= 0 && right < s.size() && s[left] == s[right]) {
+        --left;
+        ++right;
+    }
+    // (right - 1) - (left + 1) + 1
+    return s.substr(left + 1, right - left - 1);
+}
+
+
+string longestPalindrome(string s) {
+    string res;
+    for (int i = 0; i < s.size(); ++i) {
+        string s1 = palindrome(s, i, i);
+        if (s1.size() > res.size()) res = s1;
+        string s2 = palindrome(s, i, i + 1);
+        if (s2.size() > res.size()) res = s2;
+    }
+    return res;
+}
+
+string palindrome(string s, int left, int right) {
+    while (left >= 0 && right < s.size() && s[left] == s[right]) {
+        --left;
+        ++right;
+    }
+    // (right - 1) - (left + 1) + 1
+    return s.substr(left + 1, right - left - 1);
+}
+
+// dp
+string longestPalindrome(string s) {
+    int n = s.size();
+    if (n < 2) return s;
+
+    int begin = 0, maxlen = 1;
+    vector<vector<int>> dp(n, vector<int> (n));
+    for (int i = 0; i < n; ++i) {
+        dp[i][i] = true;
+    }
+
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i + 1; j < n; ++j) {
+            if (s[i] != s[j]) dp[i][j] = false;
+            else {
+                if (j - i < 3) {
+                    dp[i][j] = true;
+                } else {
+                    dp[i][j] = dp[i + 1][j - 1];
+                }
+            }
+
+            if (dp[i][j] && j - i + 1 > maxlen) {
+                maxlen = j - i +  1;
+                begin = i;
+            }
+        }
+    }
+
+    return s.substr(begin, maxlen);
 }

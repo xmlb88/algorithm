@@ -64,3 +64,79 @@ vector<int> inorderTraversal(TreeNode* root) {
         
     }
 }
+
+
+// review 2021年5月25日14:55:44
+// 递归
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    inorder(root, res);
+    return res;
+}
+
+void inorder(TreeNode* root, vector<int>& res) {
+    if (!root) return;
+    inorder(root -> left, res);
+    res.push_back(root -> val);
+    inorder(root -> right, res);
+}
+
+// 迭代 通用
+vector<int> inorderTraversal(TreeNode* root) {
+    stack<TreeNode*> st;
+    vector<int> res;
+    if (root) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        if (node) {
+            if (node -> right) st.push(node -> right);
+            st.push(node);
+            st.push(nullptr);
+            if (node -> left) st.push(node -> left);
+        } else {
+            node = st.top();
+            st.pop();
+            res.push_back(node -> val);
+        }
+    }
+    return res;
+}
+
+// 迭代
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur != nullptr || !st.empty()) {
+        while (cur) {
+            st.push(cur);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}
+
+// 中序遍历 普通迭代
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) {
+            st.push(cur);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}

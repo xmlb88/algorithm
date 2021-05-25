@@ -103,3 +103,143 @@ vector<int> preorderTraversal(TreeNode* root) {
     }
     return res;
 }
+
+
+// review 2021年5月25日14:33:01
+// 递归
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    preorder(root, res);
+    return res;
+}
+
+void preorder(TreeNode* root, vector<int>& res) {
+    if (!root) return;
+    res.push_back(root -> val);
+    preorder(root -> left, res);
+    preorder(root -> right, res);
+}
+
+// 迭代 stack
+vector<int> preorderTraversal(TreeNode* root) {
+    stack<TreeNode*> st;
+    if (root) st.push(root);
+    vector<int> res;
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        res.push_back(node -> val);
+        // 右结点先进栈
+        if (node -> right) st.push(node -> right);
+        if (node -> left) st.push(node -> left);
+    }
+    return res;
+}
+
+// 迭代 通用版
+vector<int> preorderTraversal(TreeNode* root) {
+    stack<TreeNode*> st;
+    vector<int> res;
+    if (root) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        if (node) {
+            if (node -> right) st.push(node -> right);
+            if (node -> left) st.push(node -> left);
+            st.push(node);
+            st.push(nullptr);
+        } else {
+            node = st.top();
+            st.pop();
+            res.push_back(node -> val);
+        }
+    }
+    return res;
+}
+
+// 迭代 指针
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) {
+            res.push_back(cur -> val);
+            st.push(cur -> right);
+            cur = cur -> left;
+        }
+        cur = st.top();
+        st.pop();
+    }
+    return res;
+}
+
+// 普通迭代 review
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) {
+            res.push_back(cur -> val);
+            st.push(cur -> right);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+    }
+    return res;
+}
+
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) {
+            res.push_back(cur -> val);
+            st.push(cur);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+        cur = cur -> right;
+    }
+    return res;
+}
+
+// Morris遍历
+
+void preorderMorris(TreeNode* root) {
+    if (!root) return;
+    TreeNode* cur = root;   // 当前节点
+    TreeNode* curLeft = nullptr;    // 当前节点的左子树
+    while (cur) {
+        curLeft = cur -> left;
+        // 当前节点的左子树存在即可建立连接
+        if (curLeft) {
+            // 找到当前左子树的最右侧节点，并且不能沿着连接返回上层
+            while (curLeft -> right && curLeft -> right != cur) {
+                curLeft = curLeft -> right;
+            }
+
+            // 最右侧节点的右指针没有指向根节点，创建连接并前往下一个左子数
+            // 的根节点进行连接操作
+            if (!curLeft -> right) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else {
+                // 左子树的最右侧节点有指向根节点，此时说明我们已经进入到了返回
+                // 上层的阶段，不再是一开始的建立连接阶段，同时在回到根节点时我们
+                // 应处理完下层节点，直接断开连接即可
+                curLeft -> right = nullptr;
+            }
+            // 返回上层阶段向右走
+            cur = cur -> right;
+        }
+    }
+}

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 // 暴力解法 时间O(n^2) 空间O(1)
@@ -97,3 +98,48 @@ vector<vector<int>> twoSumTarget(vector<int>& nums, int target) {
     return res;
 }
 
+
+
+// twosum review 
+// 2021年5月25日11:15:34
+// 暴力循环
+vector<int> twoSum(vector<int>& nums, int target) {
+    for (int i = 0; i < nums.size() - 1; ++i) {
+        for (int j = i + 1; j < nums.size(); ++j) {
+            if (nums[i] + nums[j] == target)
+                return {i, j};
+        }
+    }
+    return {-1, -1};
+}
+
+// 哈希
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> m;
+    for (int i = 0; i < nums.size(); ++i) {
+        if (m.find(target - nums[i]) != m.end()) {
+            return {m[target - nums[i]], i};
+        }
+        m[nums[i]] = i;
+    }
+    return {-1, -1};
+}
+
+// 排序 + 双指针
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> m;
+    for (int i = 0; i < nums.size(); ++i) {
+        m[nums[i]] = i;
+    }
+
+    sort(nums.begin(), nums.end());
+    int i = 0, j = nums.size() - 1;
+    while (i < j) {
+        if (nums[i] + nums[j] == target) {
+            return {m[nums[i]], m[nums[j]]};
+        } else if (nums[i] + nums[j] < target) {
+            ++i;
+        } else --j;
+    }
+    return {-1, -1};
+}
