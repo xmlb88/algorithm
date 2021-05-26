@@ -85,3 +85,44 @@ vector<string> split(string& s, const string& delemiters = ',') {
         pos = s.find_first_of(delemiters, lastpos);
     }
 }
+
+
+
+// review 2021Äê5ÔÂ26ÈÕ09:46:49
+
+// find
+vector<string> split(string& s, const string& delemiters = ',') {
+    string::size_type lastpos = s.find_first_not_of(delemiters, 0);
+    string::size_type pos = s.find_first_of(delemiters, lastpos);
+    vector<string> result;
+    while (lastpos != string::npos || pos != string::npos) {
+        result.push_back(s.substr(lastpos, pos - lastpos));
+        lastpos = s.find_first_not_of(delemiters, pos);
+        pos = s.find_first_of(delemiters, lastpos);
+    }
+    return result;
+}
+
+// stringstream
+
+vector<string> split(string& s, const char& flag = ',') {
+    stringstream ss(s);
+    string str;
+    vector<string> res;
+    while (getline(ss, str, flag)) {
+        res.push_back(str);
+    }
+    return res;
+}
+
+// strtok
+
+vector<string> split(string& s) {
+    vector<string> res;
+    char* token = strtok(s.data(), ",");
+    while (token != NULL) {
+        res.push_back(token);
+        token = strtok(NULL, ",");
+    }
+    return res;
+}

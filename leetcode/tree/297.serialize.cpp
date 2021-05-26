@@ -576,3 +576,237 @@ public:
         return root;
     }
 };
+
+
+
+
+
+
+// review 2021年5月26日09:32:40
+
+queue<string> split(string& s, char flag = ',') {
+    stringstream ss(s);
+    string str;
+    queue<string> q;
+    while (getline(ss, str, flag)) {
+        q.push(str);
+    }
+    return q;
+}
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string s;
+        str_serialize(root, s);
+        return s;
+    }
+
+    void str_serialize(TreeNode* root, string& s) {
+        if (!root) {
+            s += "#,";
+            return;
+        }
+
+        s += to_string(root -> val) + ",";
+        str_serialize(root -> left, s);
+        str_serialize(root -> right, s);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        queue<string> nodes = split(data, ',');
+        return tree_deserialize(nodes);
+    }
+
+    TreeNode* tree_deserialize(queue<string>& q) {
+        string node = q.front();
+        q.pop();
+        if (node == "#") return nullptr;
+        TreeNode* root = new TreeNode(stoi(node));
+        root -> left = tree_deserialize(q);
+        root -> right = tree_deserialize(q);
+        return root;
+    }
+};
+
+// 后序遍历
+
+vector<string> split(string& s, const string& delemiters = ",") {
+    string::size_type lastpos = s.find_first_not_of(delemiters, 0);
+    string::size_type pos = s.find_first_of(delemiters, lastpos);
+    vector<string> res;
+    while (lastpos != string::npos || pos != string::npos) {
+        res.push_back(s.substr(lastpos, pos - lastpos));
+        lastpos = s.find_first_not_of(delemiters, pos);
+        pos = s.find_first_of(delemiters, lastpos);
+    }
+    return res;
+}
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string s;
+        str_serialize(root, s);
+        return s;
+    }
+
+    void str_serialize(TreeNode* root, string& s) {
+        if (!root) {
+            s += "#,";
+            return;
+        }
+
+        str_serialize(root -> left, s);
+        str_serialize(root -> right, s);
+        s += to_string(root -> val) + ",";
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        vector<string> nodes = split(data);
+        return tree_deserialize(nodes);
+    }
+
+    TreeNode* tree_deserialize(vector<string>& nodes) {
+        string node = nodes.back();
+        nodes.pop_back();
+        if (node == "#") return nullptr;
+        TreeNode* root = new TreeNode(stoi(node));
+        root -> right = tree_deserialize(nodes);
+        root -> left = tree_deserialize(nodes);
+        return root;
+    }
+};
+
+// 层序遍历
+
+
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (!root) return "";
+        queue<TreeNode*> q;
+        stringstream ss;
+        q.push(root);
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; ++i) {
+                TreeNode* node = q.front();
+                q.pop();
+                if (!node) {
+                    ss << "#" << " ";
+                    continue;
+                }
+                ss << node -> val << " ";
+                q.push(node -> left);
+                q.push(node -> right);
+            }
+        }
+        return ss.str();
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data.empty()) return nullptr;
+        stringstream ss(data);
+        queue<TreeNode*> q;
+        string head;
+        ss >> head;
+        TreeNode* root = new TreeNode(stoi(head));
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode* parent = q.front();
+            q.pop();
+            string left;
+            ss >> left;
+            if (left == "#") {
+                parent -> left = nullptr;
+            } else {
+                parent -> left = new TreeNode(stoi(left));
+                q.push(parent -> left);
+            }
+
+            string right;
+            ss >> right;
+            if (right == "#") {
+                parent -> right = nullptr;
+            } else {
+                parent -> right = new TreeNode(stoi(right));
+                q.push(parent -> right);
+            }
+        }
+        return root;
+    }
+};
+
+
+// 层序遍历
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (root == NULL) return "";
+        stringstream ss;
+        queue<TreeNode*> que;
+        que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                if (node == NULL) {
+                    ss << "#" << " ";
+                    continue;
+                }
+                ss << node -> val << " ";
+                que.push(node -> left);
+                que.push(node -> right);
+            }
+        }
+        return ss.str();
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data.empty()) return NULL;
+        stringstream ss(data);
+        queue<TreeNode*> que;
+        string first;
+        ss >> first;
+        TreeNode* root = new TreeNode(stoi(first));
+        que.push(root);
+        while (!que.empty()) {
+            TreeNode* parent = que.front();
+            que.pop();
+            string left;
+            ss >> left;
+            if (left == "#") {
+                parent -> left = NULL;
+            } else {
+                parent -> left = new TreeNode(stoi(left));
+                que.push(parent -> left);
+            }
+
+            string right;
+            ss >> right;
+            if (right == "#") {
+                parent -> right = NULL;
+            } else {
+                parent -> right = new TreeNode(stoi(right));
+                que.push(parent -> right);
+            }
+        }
+        return root;
+    }
+};
