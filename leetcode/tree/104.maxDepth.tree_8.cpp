@@ -24,3 +24,26 @@ int maxDepth(TreeNode* root) {
     }
     return ans;
 }
+
+// review
+int maxDepth(TreeNode *root) {
+    if (!root) return 0;
+    return max(maxDepth(root -> left), maxDepth(root -> right)) + 1;
+}
+
+int maxDepth(TreeNode* root) {
+    int res = 0;
+    queue<TreeNode*> q;
+    if (root) q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = q.front();
+            q.pop();
+            if (node -> left) q.push(node -> left);
+            if (node -> right) q.push(node -> right);
+        }
+        ++res;
+    }
+    return res;
+}
