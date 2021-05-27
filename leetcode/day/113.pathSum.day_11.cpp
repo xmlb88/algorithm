@@ -51,3 +51,27 @@ void dfs(TreeNode* root, int sum) {
     dfs(root -> right, sum);
     vec.pop_back();
 }
+
+
+// review 2021年5月27日17:15:56
+
+// 回溯
+vector<vector<int>> res;
+vector<int> path;
+void dfs(TreeNode* root, int targetSum, int preSum) {
+    if (!root) return;
+    preSum += root -> val;
+    path.push_back(root -> val);
+    if (!root -> left && !root -> right && targetSum == preSum) {
+        res.push_back(path);
+    }
+
+    dfs(root -> left, targetSum, preSum);
+    dfs(root -> right, targetSum, preSum);
+    path.pop_back();
+}
+
+vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+    dfs(root, targetSum, 0);
+    return res;
+}

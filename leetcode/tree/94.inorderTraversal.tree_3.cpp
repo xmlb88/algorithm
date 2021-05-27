@@ -140,3 +140,53 @@ vector<int> inorderTraversal(TreeNode* root) {
     }
     return res;
 }
+
+// Morris遍历
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right != nullptr && curLeft -> right != cur)
+                curLeft = curLeft -> right;
+
+            if (curLeft -> right == nullptr) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        }
+        // 左子树为空，说明左侧到头，直接输出并返回上层
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}
+
+
+// Morris
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur)
+                curLeft = curLeft -> right;
+
+            if (curLeft -> right == nullptr) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        }
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}

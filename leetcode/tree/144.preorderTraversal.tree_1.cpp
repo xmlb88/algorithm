@@ -213,6 +213,7 @@ vector<int> preorderTraversal(TreeNode* root) {
 
 // Morris遍历
 
+// 遍历方式
 void preorderMorris(TreeNode* root) {
     if (!root) return;
     TreeNode* cur = root;   // 当前节点
@@ -242,4 +243,75 @@ void preorderMorris(TreeNode* root) {
             cur = cur -> right;
         }
     }
+}
+
+// 遍历方式
+void preorderMorris(TreeNode* root) {
+    if (!root) return;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur != nullptr) {
+        curLeft = cur -> left;
+        if (curLeft != nullptr) {
+            while (curLeft -> right != nullptr && curLeft -> right != cur)
+                curLeft = curLeft -> right;
+
+            if (curLeft -> right == nullptr) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        }
+        cur = cur -> right;
+    }
+}
+
+// Morris前序遍历
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur != nullptr) {
+        curLeft = cur -> left;
+        if (curLeft != nullptr) {
+            while (curLeft -> right != nullptr && curLeft -> right != cur)
+                curLeft = curLeft -> right;
+
+            if (curLeft -> right == nullptr) {
+                curLeft -> right = cur;
+                res.push_back(cur -> val);
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        } else res.push_back(cur -> val);
+
+        cur = cur -> right;
+    }
+    return res;
+}
+
+// Morris
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur)
+                curLeft = curLeft -> right;
+
+            if (curLeft -> right == nullptr) {
+                res.push_back(cur -> val);
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        } else res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
 }

@@ -94,3 +94,50 @@ string reverseParentheses(string s) {
     }
     return ret;
 }
+
+
+// review 2021Äê5ÔÂ27ÈÕ09:21:23
+string reverseParentheses(string s) {
+    stack<string> st;
+    string str;
+    for (char c : s) {
+        if (c == '(') {
+            st.push(str);
+            str = "";
+        } else if (c == ')') {
+            reverse(str.begin(), str.end());
+            str = st.top() + str;
+            st.pop();
+        } else str.push_back(c);
+    }
+    return str;
+}
+
+
+string reverseParentheses(string s) {
+    int n = s.size();
+    vector<int> pair(n);
+    stack<int> st;
+    for (int i = 0; i < n; ++i) {
+        if (s[i] == '(') {
+            st.push(i);
+        } else if (s[i] == ')') {
+            int j = st.top();
+            st.pop();
+            pair[i] = j;
+            pair[j] = i;
+        }
+    }
+
+    int index = 0, step = 1;
+    string res;
+    while (index < n) {
+        if (s[index] == '(' || s[index] == ')') {
+            index = pair[index];
+            step = -step;
+        } else res.push_back(s[index]);
+
+        index += step;
+    }
+    return res;
+}
