@@ -89,3 +89,38 @@ class Base {};
 class Last final : Base {}; // Last不能作为基类
 class Bad : NoDerived {};   // 错误：NoDerived是final的
 class Bad2 : Last {};   // 错误：Last是final的
+
+
+// 539：使用作用域运算符强制执行虚函数的某个版本
+// 强行调用基类中定义的函数版本而不管baseP的动态类型到底是什么
+double undiscounted = baseP -> Quote::net_price(42);
+
+
+// 15.4 抽象基类 page:541
+// 用于保存折扣值和购买量的类，派生类使用这些数据可以实现不同的价格策略
+class Disc_quote : public Quote {
+public:
+    Disc_quote() = default;
+    Disc_quote(const std::string& book, double price, std::size_t qty, double disc) :
+            Quote(book, price), quantity(qty), discount(disc) {}
+    double net_price(std::size_t) const = 0;
+protected:
+    std::size_t quantity = 0;   // 折扣适用的购买量
+    double discount = 0.0;  // 表示折扣的小数值
+};
+
+// Disc_quote声明了纯虚函数，而Bulk_quote将覆盖该函数
+Disc_quote discounted;  // 错误：不能定义Disc_quote的对象
+Bulk_quote bulk;    // 正确：Bulk_quote中没有纯虚函数
+
+
+// 重新实现Bulk_quote
+// 当同一书籍的销售超过某个值时启用折扣
+// 折扣的值时一个小于1的正的小数值，以此来降低正常销售价格
+class Bulk_quote : public Disc_quote {
+public:
+    Bulk_quote() = default;
+    Bulk_quote(const std::string& book, double price, std::size_t qty, double disc):
+            Disc_quote(book, price, qty, disc) {}
+    double net_price(std::size_t) const override;
+};

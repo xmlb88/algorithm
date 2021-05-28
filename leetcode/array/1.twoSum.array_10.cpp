@@ -143,3 +143,61 @@ vector<int> twoSum(vector<int>& nums, int target) {
     }
     return {-1, -1};
 }
+
+// 2数之和
+
+// 暴力遍历
+vector<int> twoSum(vector<int>& nums, int target) {
+    for (int i = 0; i < nums.size() - 1; ++i) {
+        for (int j = i + 1; j < nums.size(); ++j) {
+            if (nums[i] + nums[j] == target) return {i, j};
+        }
+    }
+    return {-1, -1};
+}
+// 时间O(n^2) 空间O(1)
+
+// 哈希表
+// 边查找边记录
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> m;
+    for (int i = 0; i < nums.size(); ++i) {
+        if (m.find(target - nums[i]) != m.end()) {
+            return {i, m[target - nums[i]]};
+        }
+        m[nums[i]] = i;
+    }
+    return {-1, -1};
+}
+// 时间O(n) 空间O(n)
+
+// 排序 + 双指针
+vector<int> twoSum(vector<int>& nums, int target) {
+    int n = nums.size();
+    // 数据重复的时候不能用hash保存下标 
+    // unordered_map<int, int> m;
+    // for (int i = 0; i < n; ++i) {
+    //     m[nums[i]] = i;
+    // }
+    vector<int> temp(nums);
+
+    sort(nums.begin(), nums.end());
+    int left = 0, right = n - 1;
+    int i = -1, j = -1;
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) {
+            // return {m[nums[left]], m[nums[right]]};
+            for (int k = 0; k < n; ++k) {
+                if (temp[k] == nums[left] || temp[k] == nums[right]) {
+                    if (i == -1) i = k;
+                    else j = k;
+                }
+            }
+            return {i, j};
+        } else if (sum > target) --right;
+        else ++left;
+    }
+    return {-1, -1};
+}
+// 时间O(nlogn) 空间O(n)
