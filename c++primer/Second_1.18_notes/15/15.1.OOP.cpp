@@ -124,3 +124,45 @@ public:
             Disc_quote(book, price, qty, disc) {}
     double net_price(std::size_t) const override;
 };
+
+
+// 543 15.5
+class Base {
+protected:
+    int prot_mem;   // protected成员
+};
+
+class Sneaky : public Base {
+    friend void clobber(Sneaky&);   // 能访问Sneaky::prot_mem
+    friend void clobber(Base&); // 不能访问Base::prot_mem
+    int j;  // j默认是private
+};
+
+// 正确：clobber能访问Sneaker对象的private和protected成员
+void clobber(Sneaky &s) {s.j = s.prot_mem = 0;}
+// 错误：clobber不能访问Base的protected成员
+void clobber(Base &b) {b.prot_mem = 0;}
+// 受保护的 成员 "Base::prot_mem" (已声明 所在行数:132) 不能通过 "Base" 指针或对象访问C/C++(410)
+
+
+// 543 
+class Base {
+public:
+    void pub_mem(); // public成员
+protected:
+    int prot_mem;   // protected成员
+private:
+    char priv_mem;  // private成员
+};
+
+struct Pub_Derv : public Base {
+    // 正确：派生类能访问protected成员
+    int f() {return prot_mem;}
+    // 错误：private成员对于派生类来说是不可访问的
+    char g() {return priv_mem;}
+};
+
+struct Priv_Derv : private Base {
+    // private不影响派生类的访问权限
+    int f1() const {return prot_mem;}
+};
