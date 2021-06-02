@@ -266,3 +266,143 @@ vector<int> postorderTraversal(TreeNode* root) {
     addPath(res, root);
     return res;
 }
+
+
+// review 2021年6月2日16:52:54
+// 递归
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> res;
+    dfs(root, res);
+    return res;
+}
+
+void dfs(TreeNode* root, vector<int>& res) {
+    if (!root) return;
+    dfs(root -> left, res);
+    dfs(root -> right, res);
+    res.push_back(root -> val);
+}
+
+// 迭代1
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    if (root) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        if (node) {
+            st.push(node);
+            st.push(nullptr);
+            if (node -> right) st.push(node -> right);
+            if (node -> left) st.push(node -> left);
+        } else {
+            node = st.top();
+            st.pop();
+            res.push_back(node -> val);
+        }
+    }
+    return res;
+}
+
+// 迭代2
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    if (root) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        res.push_back(node -> val);
+        if (node -> left) st.push(node -> left);
+        if (node -> right) st.push(node -> right);
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+// 迭代3
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    stack<TreeNode*> st;
+    TreeNode *cur = root, *prev = nullptr;
+    while (cur || !st.empty()) {
+        while (cur) {
+            st.push(cur);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+        if (cur -> right && cur -> right != prev) {
+            st.push(cur);
+            cur = cur -> right;
+        } else {
+            res.push_back(cur -> val);
+            prev = cur;
+            cur = nullptr;
+        }
+    }
+    return res;
+}
+
+// Morris
+
+void Morris(TreeNode* root) {
+    if (!root) return;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur) {
+                curLeft = curLeft -> right;
+            }
+
+            if (!curLeft -> right) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else curLeft -> right = nullptr;
+        }
+        cur = cur -> right;
+    }
+}
+
+void addPath(TreeNode* root, vector<int>& res) {
+    int count = 0;
+    while (root) {
+        res.push_back(root -> val);
+        root = root -> right;
+        ++count;
+    }
+    reverse(res.end() - count, res.end());
+}
+
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur) {
+                curLeft = curLeft -> right;
+            }
+
+            if (!curLeft -> right) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else {
+                curLeft -> right = nullptr;
+                addPath(cur -> left, res);
+            }
+        }
+        cur = cur -> right;
+    }
+    addPath(root, res);
+    return res;
+}

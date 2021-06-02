@@ -42,3 +42,23 @@ bool checkSubarraySum(vector<int>& nums, int k) {
     }
     return false;
 }
+
+
+// Ç°×ººÍ + hash
+bool checkSubarraySum(vector<int>& nums, int k) {
+    int n = nums.size();
+    if (n <= 1) return false;
+
+    int pre = 0;
+    unordered_map<int, int> m;
+    m[0] = -1;
+
+    for (int i = 0; i < n; ++i) {
+        pre += nums[i];
+        int mod = pre % k;
+        if (m.find(mod) != m.end()) {
+            if (i - m[mod] >= 2) return true;
+        } else m[mod] = i;
+    }
+    return false;
+}

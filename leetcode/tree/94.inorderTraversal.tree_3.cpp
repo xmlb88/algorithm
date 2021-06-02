@@ -190,3 +190,112 @@ vector<int> inorderTraversal(TreeNode* root) {
     }
     return res;
 }
+
+
+// review 2021年6月2日16:34:51
+// 中序遍历 左中右
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    dfs(root, res);
+    return res;
+}
+
+void dfs(TreeNode* root, vector<int>& res) {
+    if (!root) return;
+    dfs(root -> left, res);
+    res.push_back(root -> val);
+    dfs(root -> right, res);
+}
+
+// 迭代1
+// 左中右
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    if (root) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        if (node) {
+            if (node -> right) st.push(node -> right);
+            st.push(node);
+            st.push(nullptr);
+            if (node -> left) st.push(node -> left);
+        } else {
+            node = st.top();
+            st.pop();
+            res.push_back(node -> val);
+        }
+    }
+    return res;
+}
+
+// 迭代2
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) {
+            st.push(cur);
+            cur = cur -> left;
+        }
+
+        cur = st.top();
+        st.pop();
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}
+
+void Morris(TreeNode* root) {
+    if (!root) return;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur) {
+                curLeft = curLeft -> right;
+            }
+
+            if (!curLeft -> right) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else {
+                curLeft -> right = nullptr;
+            }
+        }
+        cur = cur -> right;
+    }
+}
+
+
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    if (!root) return res;
+    TreeNode* cur = root;
+    TreeNode* curLeft = nullptr;
+    while (cur) {
+        curLeft = cur -> left;
+        if (curLeft) {
+            while (curLeft -> right && curLeft -> right != cur) {
+                curLeft = curLeft -> right;
+            }
+
+            if (!curLeft -> right) {
+                curLeft -> right = cur;
+                cur = cur -> left;
+                continue;
+            } else {
+                curLeft -> right = nullptr;
+            }
+        }
+        res.push_back(cur -> val);
+        cur = cur -> right;
+    }
+    return res;
+}
