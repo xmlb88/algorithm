@@ -97,3 +97,68 @@ int mySqrt(int x) {
     }
     return res;
 }
+
+
+// review 2021年6月7日11:43:41
+// 8
+int mySqrt(int x) {
+    if (x == 0) return 0;
+    if (x == 1) return 1;
+    int left = 1, right = x / 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        long long res = static_cast<long long>(mid) * mid;
+        if (res == x) return mid;
+        else if (res < x) left = mid + 1;
+        else right = mid - 1;
+    }
+    return right;
+}
+
+int mySqrt(int x) {
+    double last, res = 1.0;
+    while (true) {
+        last = res;
+        res = (res + x / res) / 2;
+        if (abs(last - res) < 1e-6) {
+            break;
+        }
+    }
+    return static_cast<int> (res);
+}
+
+
+// 数学 x ^ (1/2) = e ^ ((1/2)ln(x))
+int mySqrt(int x) {
+    if (x == 0) return 0;
+    int res = exp(0.5 * log(x));
+    return static_cast<long long>(res + 1) * (res + 1) <= x ? res + 1 : res;
+}
+
+
+// 二分
+int mySqrt(int x) {
+    if (x <= 1) return x;
+    int left = 1, right = x / 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        long long res = static_cast<long long> (mid) * mid;
+        if (res == x) return mid;
+        else if (res < x) left = mid + 1;
+        else right = mid - 1;
+    }
+    return right;
+}
+
+
+// 牛顿迭代法
+int mySqrt(int x) {
+    if (x <= 1) return x;
+    double last, res = x;
+    while (true) {
+        last = res;
+        res = (res + x / res) / 2;
+        if (abs(last - res) < 1e-6) break;
+    }
+    return static_cast<int>(res);
+}
