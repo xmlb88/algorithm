@@ -17,3 +17,18 @@ int lastStoneWeight(vector<int>& stones) {
 
     return q.empty() ? 0 : q.top();
 }
+
+int lastStoneWeight(vector<int>& stones) {
+    priority_queue<int> q;
+    for (int stone : stones) q.push(stone);
+
+    while (q.size() > 1) {
+        int stone1 = q.top();
+        q.pop();
+        int stone2 = q.top();
+        q.pop();
+        if (stone1 == stone2) continue;
+        q.push(abs(stone1 - stone2));
+    }
+    return q.empty() ? 0 : q.top();
+}

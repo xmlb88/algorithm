@@ -166,3 +166,17 @@ struct Priv_Derv : private Base {
     // private不影响派生类的访问权限
     int f1() const {return prot_mem;}
 };
+
+
+class Base {
+    // 添加friend声明，其他成员与之前的版本一致
+    friend class pal;   // pal在访问Base的派生类时不具有特殊性
+};
+
+class Pal {
+public:
+    int f(Base b) { return b.prot_mem; }    // 正确：Pal是Base的友元
+    int f2(Sneaky s) { return s.j; }    // 错误：Pal不是Sneaky的友元
+    // 对基类的访问权限由基类本身控制，即使对于派生类的基类部分也是如此
+    int f3(Sneaky s) { return s.prot_mem; } // 正确：Pal是Base的友元
+};
