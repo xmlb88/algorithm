@@ -31,7 +31,6 @@ void merge(vector<int>& nums, int left, int right) {
     int mid = left + (right - left) / 2;
     int l = left, r = mid + 1;
     while (l <= mid && r <= right) {
-        cout << nums[l] << " compare " << nums[r] << endl;
         if (nums[l] <= nums[r] * 3) {
             ++l;
         } else {

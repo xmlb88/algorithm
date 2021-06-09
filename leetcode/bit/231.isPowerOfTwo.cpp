@@ -12,3 +12,9 @@ bool isPowerOfTwo(int n) {
     long x = n;
     return (x & -x) == x;
 }
+
+bool isPowerOfTwo(int n) {
+    if (n == 0) return false;
+    long x = n;
+    return (x & -x) == x;
+}
