@@ -66,3 +66,36 @@ vector<int> findAnagrams(string s, string t) {
     }
     return res;
 }
+
+
+// review 2021Äê6ÔÂ15ÈÕ14:20:25
+vector<int> findAnagrams(string s, string p) {
+    unordered_map<char, int> need, window;
+    for (char c : p) {
+        need[c]++;
+    }
+
+    int left = 0, right = 0;
+    int valid = 0;
+    vector<int> res;
+    while (right < s.size()) {
+        char c = s[right];
+        ++right;
+        if (need.find(c) != need.end()) {
+            window[c]++;
+            if (window[c] == need[c]) ++valid;
+        }
+
+        if (right - left == p.size()) {
+            if (valid == need.size()) res.push_back(left);
+
+            char t = s[left];
+            ++left;
+            if (need.find(t) != need.end()) {
+                if (window[t] == need[t]) --valid;
+                window[t]--;
+            }
+        }
+    }
+    return res;
+}

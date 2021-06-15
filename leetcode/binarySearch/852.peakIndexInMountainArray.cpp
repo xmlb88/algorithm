@@ -37,3 +37,19 @@ int peakIndexInMountainArray(vector<int>& arr) {
     }
     return lo;
 }
+
+int peakIndexInMountainArray(vector<int>& arr) {
+    int i = 0;
+    while (i < arr.size() - 1 && arr[i] < arr[i + 1]) ++i;
+    return i;
+}
+
+int peakIndexInMountainArray(vector<int>& arr) {
+    int left = 0, right = arr.size() - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] < arr[mid + 1]) left = mid + 1;
+        else right = mid;
+    }
+    return left;
+}
