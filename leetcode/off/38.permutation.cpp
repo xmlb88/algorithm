@@ -75,3 +75,32 @@ void dfs(string s, int start) {
         swap(s[i], s[start]);
     }
 }
+
+
+// review 2021Äê6ÔÂ22ÈÕ15:59:28
+set<string> st;
+
+void dfs(string s, vector<int>& used, string& str) {
+    if (str.size() == s.size()) {
+        st.insert(str);
+        return;
+    }
+
+    for (int i = 0; i < s.size(); ++i) {
+        if (used[i]) continue;
+        used[i] = 1;
+        str.push_back(s[i]);
+        dfs(s, used, str);
+        str.pop_back();
+        used[i] = 0;
+    }
+}
+
+vector<string> permutation(string s) {
+    int n = s.size();
+    vector<int> used(n, 0);
+    string str = "";
+    dfs(s, used, str);
+    vector<string> res(st.begin(), st.end());
+    return res;
+}
