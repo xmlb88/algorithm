@@ -47,3 +47,24 @@ int minCostClimbingStairs(vector<int>& cost) {
 
     return curr;
 }
+
+
+// review 2021Äê6ÔÂ24ÈÕ10:36:15
+int minCostClimbingStairs(vector<int>& cost) {
+    int n = cost.size();
+    vector<int> dp(n + 1, 0);
+    for (int i = 2; i <= n; ++i) {
+        dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+    }
+    return dp[n];
+}
+
+int minCostClimbingStairs(vector<int>& cost) {
+    int prev = 0, curr = 0;
+    for (int i = 2; i <= cost.size(); ++i) {
+        int temp = min(prev + cost[i - 2], curr + cost[i - 1]);
+        prev = curr;
+        curr = temp;
+    }
+    return curr;
+}

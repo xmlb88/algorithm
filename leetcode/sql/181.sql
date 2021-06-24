@@ -1,0 +1,2 @@
+select a.Name as Employee from Employee a, Employee b where a.ManagerId = b.Id and a.Salary > b.Salary;
+select a.Name as Employee from Employee as a join Employee as b on a.ManagerId = b.Id where a.Salary > b.Salary;
