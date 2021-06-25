@@ -20,10 +20,10 @@ int maxProfit(vector<int>& prices) {
 }
 
 
-//
+// dp[i][k][0] 第i天最多进行k次交易次数未持有股票最大利润 dp[i][k][1] 第i天最多进行k次交易次数持有股票最大利润
 int maxProfit(vector<int>& prices) {
     int n = prices.size();
-    if (n == 0) return 0;
-    vector<vector<int>> buy(n, vector<int> (3)), sell(n, vector<int> (3));
-    
+    vector<vector<vector<int>>> dp(n, vector<vector<int>> (3, vector<int> (2)));
+
+    // dp[i][0][0] = 0
 }

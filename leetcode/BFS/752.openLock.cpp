@@ -174,17 +174,65 @@ int openLock(vector<string>& deadends, string target) {
                 string up = plusOne(cur, j);
                 if (!visited.count(up)) {
                     q.push(up);
-                    visited.push(up);
+                    visited.insert(up);
                 }
 
                 string down = minusOne(cur, j);
                 if (!visited.count(down)) {
                     q.push(down);
-                    visited.push(down);
+                    visited.insert(down);
                 }
             }
         }
         step++;
     }
     return -1;
+}
+
+// review 2021Äê6ÔÂ25ÈÕ09:37:27a
+
+string changeOneTimeUp(string passwd, int i) {
+    if (passwd[i] == '9') {
+        passwd[i] = '0';
+    } else passwd[i] += 1;
+    return passwd;
+}
+
+string changeOneTimeUpDown(string passwd, int i) {
+    if (passwd[i] == '0') {
+        passwd[i] = '9';
+    } else passwd[i] -= 1;
+    return passwd;
+}
+
+int openLock(vector<string>& deadends, string target) {
+    unordered_set<string> dead;
+    for (string& d : deadends) {
+        dead.insert(d);
+    }
+
+    queue<string> q;
+    q.push("0000");
+    int step = 0;
+    while (!q.empty()) {
+        int size = q.size();
+        while (size--) {
+            string passwd = q.front();
+            q.pop();
+            if (dead.find(passwd) != dead.end()) continue;
+            if (passwd == target) return step;
+            dead.insert(passwd);
+            for (int i = 0; i < 4; ++i) {
+                q.push(changeOneTimeUp(passwd, i));
+                q.push(changeOneTimeUpDown(passwd, i));
+            }
+        }
+        ++step;
+    }
+    return -1;
+}
+
+int main() {
+    vector<string> deadends = {"0201","0101","0102","1212","2002"};
+    cout << openLock(deadends, "0202") << endl;
 }

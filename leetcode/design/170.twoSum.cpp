@@ -6,7 +6,7 @@ using namespace std;
 class TwoSum {
 public:
     /** Initialize your data structure here. */
-    unordered_map<int, int> m;
+    unordered_map<long, int> m;
     TwoSum() {
 
     }
@@ -19,10 +19,15 @@ public:
     /** Find if there exists any pair of numbers which sum is equal to the value. */
     bool find(int value) {
         for (auto [val, count] : m) {
-            int target = value - val;
-            if (target == val) return m[val] > 1;
-            else return m.find(target) != m.end();
+            long target = value - val;
+            if (target == val) {
+                if (m[val] > 1) return true;
+            }
+            else {
+                if (m.find(target) != m.end()) return true;
+            }
         }
+        return false;
     }
 };
 
