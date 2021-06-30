@@ -19,7 +19,7 @@ using namespace std;
 class Codec {
 public:
 
-    queue<string> split(string& s, const char flag = ",") {
+    queue<string> split(string& s, const char flag = ',') {
         istringstream iss(s);
         queue<string> que;
         string res;
