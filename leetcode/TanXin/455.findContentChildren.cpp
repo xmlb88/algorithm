@@ -18,3 +18,14 @@ int findContentChildren(vector<int>& g, vector<int>& s) {
     return res;
 }
 
+
+// TODO:
+int findContentChildren(vector<int>& g, vector<int>& s) {
+    int n = g.size(), m = s.size();
+    sort(g.begin(), g.end());
+    sort(s.begin(), s.end());
+    int child = 0, biscuit = 0;
+    while (child < n && biscuit < m) {
+        if ()
+    }
+}
