@@ -115,3 +115,86 @@ ListNode* mergeKLists(vector<ListNode*>& lists) {
     }
     return head.next;
 }
+
+
+// review 2021年7月9日09:30:55
+ListNode* mergeTwoList(ListNode* l1, ListNode* l2) {
+    ListNode* dummy = new ListNode(0);
+    ListNode* cur = dummy;
+    while (l1 && l2) {
+        if (l1->val < l2->val) {
+            cur->next = l1;
+            l1 = l1->next;
+        } else {
+            cur->next = l2;
+            l2 = l2->next;
+        }
+        cur = cur->next;
+    }
+
+    if (l1) cur->next = l1;
+    if (l2) cur->next = l2;
+    return dummy->next;
+}
+
+ListNode* mergeK(vector<ListNode*>& lists, int left, int right) {
+    if (left > right) return nullptr;
+    if (left == right) return lists[left];
+
+    int mid = left + (right - left) / 2;
+    ListNode* l1 = mergeK(lists, left, mid);
+    ListNode* l2 = mergeK(lists, mid + 1, right);
+    return mergeTwoList(l1, l2);
+}
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    return mergeK(lists, 0, lists.size() - 1);
+}
+
+// 小顶堆
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    auto compare = [] (ListNode* a, ListNode* b) {
+        return a->val > b->val;
+    };
+    priority_queue<ListNode*, vector<ListNode*>, decltype(compare)> q(compare);
+    for (auto list : lists) {
+        if(list) q.push(list);
+    }
+
+    ListNode* head = new ListNode(0);
+    ListNode* cur = head;
+    while (!q.empty()) {
+        ListNode* l = q.top();
+        q.pop();
+        cur->next = l;
+        cur = cur->next;
+        if (l->next) q.push(l->next);
+    }
+
+    return head->next;
+}
+
+// 
+
+struct compare {
+    bool operator() (ListNode* a, ListNode* b) {
+        return a->val > b->val;
+    }
+};
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    priority_queue<ListNode*, vector<ListNode*>, compare> q;
+    for (auto list : lists) {
+        if (list) q.push(list);
+    }
+
+    ListNode head, *cur = &head;
+    while (!q.empty()) {
+        ListNode* l = q.top();
+        q.pop();
+        cur->next = l;
+        cur = cur->next;
+        if (l->next) q.push(l->next);
+    }
+    return head.next;
+}
