@@ -67,3 +67,30 @@ vector<int> singleNumber(vector<int>& nums) {
     }
     return {a, b};
 }
+
+// review 2021Äê7ÔÂ12ÈÕ11:00:04
+vector<int> singleNumber(vector<int>& nums) {
+    int x = 0;
+    for (auto num : nums) {
+        x ^= num;
+    }
+
+    // if (x == INT_MIN) {
+    //     x = 1;
+    // } else {
+    //     x = x & (-x);
+    // }
+    int div = 1;
+    while ((div & x) == 0)
+        div <<= 1;
+    int a = 0, b = 0;
+    for (auto num : nums) {
+        if (num & div) {
+            a ^= num;
+        } else {
+            b ^= num;
+        }
+    }
+    
+    return {a, b};
+}

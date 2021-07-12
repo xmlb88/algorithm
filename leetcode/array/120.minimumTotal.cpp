@@ -57,3 +57,15 @@ int minimumTotal(vector<vector<int>>& triangle) {
     }
     return triangle[0][0];
 }
+
+// review 2021年7月12日16:14:53
+// dp 由下至上 原地dp
+int minimumTotal(vector<vector<int>>& triangle) {
+    int n = triangle.size();
+    for (int i = n - 2; i >= 0; --i) {
+        for (int j = 0; j <= i; ++j) {
+            triangle[i][j] += min(triangle[i + 1][j], triangle[i + 1][j + 1]);
+        }
+    }
+    return triangle[0][0];
+}

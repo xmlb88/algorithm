@@ -78,3 +78,43 @@ vector<vector<int>> subsets(vector<int>& nums) {
     vectotr<vector<int>> res;
     
 }
+
+
+// review 2021年7月12日10:15:39
+
+vector<vector<int>> res;
+void dfs(vector<int>& nums, int i, vector<int>& track) {
+    if (i == nums.size()) {
+        res.push_back(track);
+        return;
+    }
+
+    dfs(nums, i + 1, track);
+    track.push_back(nums[i]);
+    dfs(nums, i + 1, track);
+    track.pop_back();
+}
+
+vector<vector<int>> subsets(vector<int>& nums) {
+    vector<int> track;
+    dfs(nums, 0, track);
+    return res;
+}
+
+
+// 位运算
+vector<vector<int>> subsets(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> t;
+    vector<vector<int>> res;
+    for (int i = 0; i < (1 << n); ++i) {
+        t.clear();
+        for (int j = 0; j < n; ++j) {
+            if (i & (1 << j)) {
+                t.push_back(nums[j]);
+            }
+        }
+        res.push_back(t);
+    }
+    return res;
+}
