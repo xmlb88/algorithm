@@ -14,3 +14,20 @@ int findMaximumXOR(vector<int>& nums) {
 
 // TODO:
 
+// ≈≈–Ú + ºÙ÷¶
+// https://leetcode-cn.com/problems/maximum-xor-of-two-numbers-in-an-array/solution/c-pai-xu-jia-jian-zhi-jian-dan-shi-xian-qj8su/
+
+int findMaximumXOR(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    long long maxValue = 0;
+    for (int i = n - 1; i >= 0; --i) {
+        for (int j = i - 1; j >= 0; --j) {
+            if ((long long)nums[i] + nums[j] < maxValue) break;
+            maxValue = max(maxValue, (long long)nums[i] ^ nums[j]);
+        }
+    }
+    return maxValue;
+}
+
+// Trie
