@@ -112,8 +112,29 @@ void dfs(vector<vector<int>>& M, int i) {
 }
 
 
+// review 2021Äê7ÔÂ16ÈÕ10:31:29
+//
 
-// BFS
-int findCircleNum(vector<vector<int>>& M) {
+int findCircleNum(vector<vector<int>>& isConnected) {
+    int n = isConnected.size();
+    vector<int> visited(n, false);
+    int count = 0;
+    for (int i = 0; i < n; ++i) {
+        if (visited[i]) continue;
+        visited[i] = true;
+        dfs(isConnected, i, visited);
+        ++count;
+    }
+    return count;
+}
 
+void dfs(vector<vector<int>>& isConnected, int i, vector<int>& visited) {
+    int n = isConnected.size();
+    for (int j = 0; j < n; ++j) {
+        if (isConnected[i][j]) {
+            if (visited[j]) continue;
+            visited[j] = true;
+            dfs(isConnected, j, visited);
+        }
+    }
 }

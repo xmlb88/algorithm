@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <numeric>
 using namespace std;
 
 class unionFind {
@@ -68,3 +69,35 @@ public:
         return true;
     }
 };
+
+
+// reivew 2021-7-16 10:06:26
+// 
+class unionFind {
+private:
+    vector<int> f, rank;
+    int unionCount;
+
+public:
+    unionFind(int n) : f(n), rank(n, 1), unionCount(n) {
+        iota(f.begin(), f.end(), 0);
+    }
+
+    int find(int x) {
+        if (x == f[x]) return x;
+        return f[x] = find(f[x]);
+    }
+
+    void unionSet(int x, int y) {
+        int fx = find(x);
+        int fy = find(y);
+        if (fx == fy) return;
+
+        if (rank(fx) < rank(fy)) {
+            swap(fx, fy);
+        }
+        f[fy] = fx;
+        rank[fx] += rank[fy];
+        --unionCount;
+    }
+}
