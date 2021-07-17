@@ -151,3 +151,29 @@ int maxSubArray(vector<int>& nums) {
     }
     return res;
 }
+
+
+// review 2021年7月17日10:20:44
+//
+int maxSubArray(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n);
+    dp[0] = nums[0];
+    int maxSum = dp[0];
+    for (int i = 1; i < n; ++i) {
+        dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+        maxSum = max(maxSum, dp[i]);
+    }
+    return maxSum;
+}
+
+// 空间优化
+int maxSubArray(vector<int>& nums) {
+    int n = nums.size();
+    int dp = nums[0], maxSum = nums[0];
+    for (int i = 1; i < n; ++i) {
+        dp = max(dp + nums[i], nums[i]);
+        maxSum = max(maxSum, dp);
+    }
+    return maxSum;
+}
